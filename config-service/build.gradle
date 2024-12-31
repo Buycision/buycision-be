@@ -25,3 +25,12 @@ dependencyManagement {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
 }
+
+tasks.register('copyExternalProperties', Copy) {
+    from "../buycision-conf"
+    include "*.yml"
+    into "src/main/resources/config"
+}
+
+processResources.dependsOn('copyExternalProperties')
+processTestResources.dependsOn('copyExternalProperties')
