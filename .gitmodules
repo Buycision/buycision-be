@@ -1,0 +1,3 @@
+[submodule "buycision-conf"]
+    path = buycision-conf
+    url = https://github.com/Buycision/buycision-conf.git
