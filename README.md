@@ -17,4 +17,4 @@ chmod +x ./execute.sh
 
 명령어를 통해 프로젝트를 실행할 수 있습니다.
 
-[Swagger UI 접속 URL](http://localhost:8000/swagger-ui.html)
+[Swagger UI 접속 URL: http://localhost:8000/swagger-ui.html](http://localhost:8000/swagger-ui.html)
