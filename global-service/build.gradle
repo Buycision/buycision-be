@@ -1,0 +1,21 @@
+group = 'project'
+version = '0.0.1-SNAPSHOT'
+
+jar {
+    enabled = true // 일반 JAR 활성화
+}
+bootJar {
+    enabled = false // 실행 가능한 JAR 비활성화
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    // bcrypt
+    implementation 'org.mindrot:jbcrypt:0.4'
+
+    // JWT
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+}

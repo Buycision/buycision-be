@@ -1,0 +1,67 @@
+services:
+  config-service:
+    build:
+      context: ./config-service
+      dockerfile: Dockerfile
+    image: config-service
+    container_name: config-service
+    restart: always
+    expose:
+      - "8888"
+    networks:
+      - app-network
+
+  discovery-service:
+    build:
+      context: ./discovery-service
+      dockerfile: Dockerfile
+    image: discovery-service
+    container_name: discovery-service
+    restart: always
+    environment:
+      - EUREKA_SERVER=http://discovery-service:8761/eureka
+      - CONFIG_SERVER=http://config-service:8888
+    ports:
+      - "8761:8761"
+    depends_on:
+      - config-service
+    networks:
+      - app-network
+
+  gateway-service:
+    build:
+      context: ./gateway-service
+      dockerfile: Dockerfile
+    image: gateway-service
+    container_name: gateway-service
+    restart: always
+    environment:
+      - EUREKA_SERVER=http://discovery-service:8761/eureka
+      - CONFIG_SERVER=http://config-service:8888
+    ports:
+      - "8000:8000"
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - app-network
+
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    image: user-service
+    container_name: user-service
+    restart: unless-stopped
+    environment:
+      - EUREKA_SERVER=http://discovery-service:8761/eureka
+      - CONFIG_SERVER=http://config-service:8888
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
