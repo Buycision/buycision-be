@@ -1,4 +1,14 @@
 services:
+  bus-service:
+    image: rabbitmq
+    container_name: bus-service
+    restart: always
+    expose:
+      - "5672"
+      - "15672"
+    networks:
+      - app-network
+
   config-service:
     build:
       context: ./config-service
@@ -6,6 +16,8 @@ services:
     image: config-service
     container_name: config-service
     restart: always
+    environment:
+      - RABBITMQ_HOST=bus-service
     expose:
       - "8888"
     networks:
@@ -38,6 +50,7 @@ services:
     environment:
       - EUREKA_SERVER=http://discovery-service:8761/eureka
       - CONFIG_SERVER=http://config-service:8888
+      - RABBITMQ_HOST=bus-service
     ports:
       - "8000:8000"
     depends_on:
@@ -56,6 +69,7 @@ services:
     environment:
       - EUREKA_SERVER=http://discovery-service:8761/eureka
       - CONFIG_SERVER=http://config-service:8888
+      - RABBITMQ_HOST=bus-service
     depends_on:
       - config-service
       - discovery-service
