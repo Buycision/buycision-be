@@ -20,7 +20,10 @@ env:
 on:
   push:
     branches:
-      -workflows
+      - workflows
+  pull_request:
+    branches:
+      - workflows
 
 jobs:
   Integration:
@@ -65,6 +68,7 @@ jobs:
           path: build/libs/*.jar
 
   Deployment:
+    if: github.event_name == 'push'
     needs: Integration
     runs-on: ubuntu-latest
 
