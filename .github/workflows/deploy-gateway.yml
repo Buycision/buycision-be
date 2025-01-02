@@ -9,9 +9,6 @@
 # 이름
 name: Deploy-gateway-service
 
-# 변수 설정
-export: COMPOSE=docker-compose.yml
-
 # 컨테이너 환경 설정
 env:
   CONTAINER_NAME: gateway-service
@@ -119,8 +116,8 @@ jobs:
       - name: Create and execute deploy script
         run: |
           echo '#!/bin/bash' > deploy.sh
-          echo 'sudo docker-compose -f $COMPOSE down --rmi all' >> deploy.sh
-          echo 'sudo docker-compose -f $COMPOSE up -d ${{env.CONTAINER_NAME}}' >> deploy.sh
+          echo 'sudo docker-compose -f docker-compose.yml down --rmi all' >> deploy.sh
+          echo 'sudo docker-compose -f docker-compose.yml up -d ${{env.CONTAINER_NAME}}' >> deploy.sh
 
       # 소스 옮기기
       - name: Transfer Deploy Script use SCP
