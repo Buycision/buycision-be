@@ -8,20 +8,20 @@
 ### GCP_USERNAME
 
 # 이름
-name: Deploy-gateway-service
+name: Deploy-config-service
 
 # 컨테이너 환경 설정
 env:
-  CONTAINER_NAME: gateway-service
+  CONTAINER_NAME: config-service
 
 # 이벤트 트리거
 on:
   push:
     branches:
-      - gateway
+      - config
   pull_request:
     branches:
-      - gateway
+      - config
 
 jobs:
   Integration:
