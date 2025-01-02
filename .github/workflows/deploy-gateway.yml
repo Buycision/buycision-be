@@ -118,8 +118,8 @@ jobs:
         run: |
           echo '#!/bin/bash' > deploy.sh
           echo 'cd buycision' >> deploy.sh
-          echo 'sudo docker-compose -f docker-compose.yml down --rmi all' >> deploy.sh
-          echo 'sudo docker-compose -f docker-compose.yml up --build -d' >> deploy.sh
+          echo 'sudo docker-compose -f docker-compose.yml down --rmi local' >> deploy.sh
+          echo 'sudo docker-compose -f docker-compose.yml up --build -d ${{env.CONTAINER_NAME}}' >> deploy.sh
 
       # 소스 옮기기
       - name: Transfer Deploy Script use SCP
