@@ -121,8 +121,6 @@ jobs:
           echo 'cd ${{env.MAIN_NAME}}/${{env.CONTAINER_NAME}}' >> deploy.sh
           echo 'sudo docker build -t ${{secrets.DOCKER_ID}}/${{env.CONTAINER_NAME}}:latest'
           echo 'sudo docker push ${{secrets.DOCKER_ID}}/${{env.CONTAINER_NAME}}:latest'
-#          echo 'sudo docker-compose -f docker-compose.yml down' >> deploy.sh
-#          echo 'sudo docker rmi ${{env.MAIN_NAME}}_${{env.CONTAINER_NAME}}' >> deploy.sh
           echo 'sudo docker-compose -f docker-compose.yml up --build -d ${{env.CONTAINER_NAME}}' >> deploy.sh
 
       # 소스 옮기기
