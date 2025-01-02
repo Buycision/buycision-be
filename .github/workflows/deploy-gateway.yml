@@ -2,9 +2,10 @@
 # DOCKER
 ### DOCKER_ID
 ### DOCKER_TOKEN
-### DOCKER_REPO
 # VM인스턴스
-###
+### GCP_HOST
+### GCP_SSH_KEY
+### GCP_USERNAME
 
 # 이름
 name: Deploy-gateway-service
@@ -117,7 +118,7 @@ jobs:
         run: |
           echo '#!/bin/bash' > deploy.sh
           echo 'sudo docker-compose -f docker-compose.yml down --rmi all' >> deploy.sh
-          echo 'sudo docker-compose -f docker-compose.yml up -d ${{env.CONTAINER_NAME}}' >> deploy.sh
+          echo 'sudo docker-compose -f docker-compose.yml up -d' >> deploy.sh
 
       # 소스 옮기기
       - name: Transfer Deploy Script use SCP
