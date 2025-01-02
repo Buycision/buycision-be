@@ -6,6 +6,7 @@
 ### GCP_HOST
 ### GCP_SSH_KEY
 ### GCP_USERNAME
+### GCP_PORT
 
 # 이름
 name: Deploy-gateway-service
@@ -126,6 +127,7 @@ jobs:
         with:
           host: ${{ secrets.GCP_HOST }}
           username: ${{ secrets.GCP_USERNAME }}
+          port: ${{ secrets.GCP_PORT }}
           key: ${{ secrets.GCP_SSH_KEY }}
           source: deploy.sh
           target: /home/${{ secrets.GCP_USERNAME }}/deploy
