@@ -13,7 +13,7 @@ name: Deploy-gateway-service
 
 # 컨테이너 환경 설정
 env:
-  CONTAINER_NAME: gateway-service
+  CONTAINER_NAME: gateway
   MAIN_NAME: buycision
 
 # 이벤트 트리거
