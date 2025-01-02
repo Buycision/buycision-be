@@ -115,8 +115,7 @@ jobs:
       - name: Create and execute deploy script
         run: |
           echo '#!/bin/bash' > deploy.sh
-          echo 'sudo docker-compose -f $COMPOSE down --rmi ${{ secrets.DOCKER_ID }}/${{ env.CONTAINER_NAME }}' >> deploy.sh
-          echo 'sudo docker pull ${{secrets.DOCKER_ID}}/${{ env.CONTAINER_NAME }}' >> deploy.sh
+          echo 'sudo docker-compose -f $COMPOSE down --rmi all' >> deploy.sh
           echo 'sudo docker-compose -f $COMPOSE up -d ${{env.CONTAINER_NAME}}' >> deploy.sh
 
       # 소스 옮기기
@@ -136,7 +135,7 @@ jobs:
         with:
           host: ${{ secrets.GCP_HOST }}
           username: ${{ secrets.GCP_USERNAME }}
-          key: ${{ secrets.GCP_SSH_kEY }}
+          key: ${{ secrets.GCP_SSH_KEY }}
           script_stop: true
           script: |
             chmod +x /home/${{ secrets.GCP_USERNAME }}/deploy/deploy.sh && 
