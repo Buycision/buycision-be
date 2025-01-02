@@ -76,6 +76,23 @@ services:
     networks:
       - app-network
 
+  chat-service:
+    build:
+      context: ./chat-service
+      dockerfile: Dockerfile
+    image: chat-service
+    container_name: chat-service
+    restart: unless-stopped
+    environment:
+      - EUREKA_SERVER=http://discovery-service:8761/eureka
+      - CONFIG_SERVER=http://config-service:8888
+      - RABBITMQ_HOST=bus-service
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge

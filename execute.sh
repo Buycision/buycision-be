@@ -54,10 +54,10 @@ echo ">>> Config Service 실행 시작"
 docker-compose down && docker-compose up --build -d config-service
 
 echo ">>> Config Service 준비 중..."
-sleep 2
+sleep 3
 
 echo ">>> 나머지 서비스 실행 시작"
-docker-compose up --build -d discovery-service gateway-service user-service bus-service
+docker-compose up --build -d discovery-service gateway-service user-service bus-service chat-service
 
 echo ">>> 모든 서비스 실행 완료"
 docker-compose ps
