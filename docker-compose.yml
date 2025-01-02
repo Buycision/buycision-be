@@ -16,6 +16,14 @@ services:
     image: config-service
     container_name: config-service
     restart: always
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
     environment:
       - RABBITMQ_HOST=bus-service
     expose:
