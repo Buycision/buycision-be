@@ -18,10 +18,10 @@ env:
 on:
   push:
     branches:
-      - gateway
+      - workflows
   pull_request:
     branches:
-      - gateway
+      - workflows
 
 jobs:
   Integration:
@@ -52,10 +52,9 @@ jobs:
       - name: Grant execute permission for gradle
         run: chmod +x ./gradlew
 
-      # develop 브랜치일 경우 dev 환경 빌드
-      # spring.profiles.active를 dev로 설정하여 Spring Boot 애플리케이션이 개발 환경 설정을 따르도록 지정.
+      # daemon 파일 + 테스트 실행 x
       - name: create build file
-        run: ./gradlew clean build -i --no-daemon
+        run: ./gradlew clean build -i --no-daemon -x test
 
       # push event일 경우 CD job에 jar file 업로드
       - name: (Push) Archive production artifacts
