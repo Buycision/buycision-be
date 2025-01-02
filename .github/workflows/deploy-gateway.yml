@@ -14,6 +14,7 @@ name: Deploy-gateway-service
 # 컨테이너 환경 설정
 env:
   CONTAINER_NAME: gateway-service
+  MAIN_NAME: buycision
 
 # 이벤트 트리거
 on:
@@ -117,8 +118,11 @@ jobs:
       - name: Create and execute deploy script
         run: |
           echo '#!/bin/bash' > deploy.sh
-          echo 'cd buycision' >> deploy.sh
-          echo 'sudo docker-compose -f docker-compose.yml down --rmi local' >> deploy.sh
+          echo 'cd ${{env.MAIN_NAME}}/${{env.CONTAINER_NAME}}' >> deploy.sh
+          echo 'sudo docker build -t ${{secrets.DOCKER_ID}}/${{env.CONTAINER_NAME}}:latest'
+          echo 'sudo docker push ${{secrets.DOCKER_ID}}/${{env.CONTAINER_NAME}}:latest'
+#          echo 'sudo docker-compose -f docker-compose.yml down' >> deploy.sh
+#          echo 'sudo docker rmi ${{env.MAIN_NAME}}_${{env.CONTAINER_NAME}}' >> deploy.sh
           echo 'sudo docker-compose -f docker-compose.yml up --build -d ${{env.CONTAINER_NAME}}' >> deploy.sh
 
       # 소스 옮기기
