@@ -16,6 +16,14 @@ services:
     image: config-service
     container_name: config-service
     restart: always
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
     environment:
       - RABBITMQ_HOST=bus-service
     expose:
@@ -65,6 +73,23 @@ services:
       dockerfile: Dockerfile
     image: user-service
     container_name: user-service
+    restart: unless-stopped
+    environment:
+      - EUREKA_SERVER=http://discovery-service:8761/eureka
+      - CONFIG_SERVER=http://config-service:8888
+      - RABBITMQ_HOST=bus-service
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - app-network
+
+  chat-service:
+    build:
+      context: ./chat-service
+      dockerfile: Dockerfile
+    image: chat-service
+    container_name: chat-service
     restart: unless-stopped
     environment:
       - EUREKA_SERVER=http://discovery-service:8761/eureka

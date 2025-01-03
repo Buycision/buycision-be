@@ -6,3 +6,4 @@ include ':gateway-service'
 include ':global-service'
 
 include ':user-service'
+include ':chat-service'
