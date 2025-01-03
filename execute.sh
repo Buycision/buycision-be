@@ -13,7 +13,7 @@ echo ">>> Gradle 빌드 시작"
 ./gradlew clean build
 
 echo ">>> wait-for-it.sh 복사"
-SERVICES=("chat-service" "config-service" "discovery-service" "gateway-service" "user-service")
+SERVICES=("chat-service" "config-service" "discovery-service" "gateway-service" "user-service" "community-service")
 for SERVICE in "${SERVICES[@]}"; do
   cp wait-for-it.sh "./$SERVICE/wait-for-it.sh"
 done
