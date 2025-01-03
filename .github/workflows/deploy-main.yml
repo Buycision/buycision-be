@@ -8,21 +8,20 @@
 ### GCP_USERNAME
 
 # 이름
-name: Deploy-config-service
+name: Deploy-main
 
-# 컨테이너 환경 설정
+# 변수
 env:
-  CONTAINER_NAME: config-service
   MAIN_NAME: buycision
 
 # 이벤트 트리거
 on:
   push:
     branches:
-      - config
+      - main
   pull_request:
     branches:
-      - config
+      - main
 
 jobs:
   Integration:
@@ -118,14 +117,9 @@ jobs:
       - name: Create and execute deploy script
         run: |
           echo '#!/bin/bash' > deploy.sh
-          echo '#!/bin/bash' > deploy.sh
-          echo 'cd ${{env.MAIN_NAME}}/${{env.CONTAINER_NAME}}' >> deploy.sh
-          echo 'sudo docker build -t ${{secrets.DOCKER_ID}}/${{env.CONTAINER_NAME}}:latest .' >> deploy.sh
-          echo 'sudo docker push ${{secrets.DOCKER_ID}}/${{env.CONTAINER_NAME}}:latest' >> deploy.sh
-          echo 'cd ..' >> deploy.sh
-          echo 'sudo docker-compose stop ${{env.CONTAINER_NAME}}' >> deploy.sh
-          echo 'sudo docker-compose rm ${{env.CONTAINER_NAME}}' >> deploy.sh
-          echo 'sudo docker-compose -f docker-compose.yml up --build -d ${{env.CONTAINER_NAME}}' >> deploy.sh
+          echo 'cd ${{env.MAIN_NAME}}' >> deploy.sh
+          echo 'sudo docker-compose -f docker-compose.yml down --rmi all' >> deploy.sh
+          echo 'sudo docker-compose -f docker-compose.yml up --build -d' >> deploy.sh
           echo 'sudo docker-compose ps' >> deploy.sh
 
       # 소스 옮기기

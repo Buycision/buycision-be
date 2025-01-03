@@ -13,17 +13,17 @@ name: Deploy-gateway-service
 
 # 컨테이너 환경 설정
 env:
-  CONTAINER_NAME: user-service
+  CONTAINER_NAME: gateway-service
   MAIN_NAME: buycision
 
 # 이벤트 트리거
 on:
   push:
     branches:
-      - workflows
+      - gateway
   pull_request:
     branches:
-      - workflows
+      - gateway
 
 jobs:
   Integration:
@@ -125,6 +125,7 @@ jobs:
           echo 'sudo docker-compose stop ${{env.CONTAINER_NAME}}' >> deploy.sh
           echo 'sudo docker-compose rm ${{env.CONTAINER_NAME}}' >> deploy.sh
           echo 'sudo docker-compose -f docker-compose.yml up --build -d ${{env.CONTAINER_NAME}}' >> deploy.sh
+          echo 'sudo docker-compose ps' >> deploy.sh
 
       # 소스 옮기기
       - name: Transfer Deploy Script use SCP
