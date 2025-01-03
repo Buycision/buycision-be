@@ -135,7 +135,7 @@ jobs:
           username: ${{ secrets.GCP_USERNAME }}
           key: ${{ secrets.GCP_SSH_KEY }}
           source: deploy.sh
-          target: /home/${{ secrets.EC2_USERNAME }}/deploy
+          target: /home/${{ secrets.GCP_USERNAME }}/deploy
 
 
       # SSH Connect
