@@ -118,7 +118,7 @@ jobs:
       - name: Create and execute deploy script
         run: |
           echo '#!/bin/bash' > deploy.sh
-          echo 'cd ${{env.MAIN_NAME}}/${{env.CONTAINER_NAME}}' >> deploy.sh
+          echo 'cd ${{env.MAIN_NAME}}-be/${{env.CONTAINER_NAME}}' >> deploy.sh
           echo 'sudo docker build -t ${{secrets.DOCKER_ID}}/${{env.CONTAINER_NAME}}:latest .' >> deploy.sh
           echo 'sudo docker push ${{secrets.DOCKER_ID}}/${{env.CONTAINER_NAME}}:latest' >> deploy.sh
           echo 'cd ..' >> deploy.sh
