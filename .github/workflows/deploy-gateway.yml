@@ -139,7 +139,7 @@ jobs:
           target: /home/${{ secrets.GCP_USERNAME }}/deploy
 
 
-      # SSH Connect
+      # SSH Connect -
       - name: Execute Server Init Script
         uses: appleboy/ssh-action@master
         with:
