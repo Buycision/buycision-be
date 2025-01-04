@@ -25,6 +25,19 @@ dependencies {
 
 	// Chat-service
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+	// Web-Socket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	//Spring webClient
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
 	// Swagger3
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.7.0'
