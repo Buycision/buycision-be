@@ -21,6 +21,8 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class LoggingFilter implements GlobalFilter, Ordered {
 
+    private static final String SWAGGER_PATH = "/v3/api-docs";
+
     private final ObjectMapper objectMapper;
     private final ModifyResponseBodyGatewayFilterFactory modifyResponseBodyGatewayFilterFactory;
 
@@ -29,6 +31,10 @@ public class LoggingFilter implements GlobalFilter, Ordered {
         String reqId = exchange.getRequest().getId();
         HttpMethod reqMethod = exchange.getRequest().getMethod();
         String reqPath = exchange.getRequest().getPath().toString();
+
+        if (reqPath.contains(SWAGGER_PATH)) {
+            return chain.filter(exchange);
+        }
 
         log.info("[ID: {}] [{}]: {} 요청이 들어왔어요.", reqId, reqMethod, reqPath);
 
@@ -54,7 +60,7 @@ public class LoggingFilter implements GlobalFilter, Ordered {
                                 BaseResponse<Object> baseResponse = new BaseResponse<>(responseBody.body());
 
                                 try {
-                                    log.info("[ID: {}] 응답: {}", reqId, objectMapper.writeValueAsString(baseResponse));
+                                    //log.info("[ID: {}] 응답: {}", reqId, objectMapper.writeValueAsString(baseResponse));
                                     return Mono.justOrEmpty(objectMapper.writeValueAsString(baseResponse));
                                 } catch (JsonProcessingException e) {
                                     return Mono.empty();
