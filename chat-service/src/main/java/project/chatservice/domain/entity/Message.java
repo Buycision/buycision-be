@@ -3,7 +3,7 @@ package project.chatservice.domain.entity;
 import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
-import project.chatservice.domain.dto.ChatMessageDto;
+import project.chatservice.domain.dto.request.MessageRequestDto;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -33,7 +33,7 @@ public class Message {
         this.createdAt = createdAt;
     }
 
-    public static Message of(ChatMessageDto chatMessageDto) {
+    public static Message of(MessageRequestDto chatMessageDto) {
         return Message.builder()
                 .roomId(chatMessageDto.roomId())
                 .senderId(chatMessageDto.userId())
