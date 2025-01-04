@@ -11,7 +11,6 @@ import java.time.ZoneId;
 @Getter
 @Document(collection = "message")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor
 public class Message {
 
     @Id

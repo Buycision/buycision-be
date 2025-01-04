@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +12,6 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor
 public class ChatRoom {
 
     // TODO: 기본적으로 1:1 채팅을 목적으로 함 추후 User쪽이 다 끝나면 그때 마무리
@@ -36,7 +34,7 @@ public class ChatRoom {
     private Boolean roomActive;
 
     @Column(nullable = false)
-    private LocalDateTime cratedAt;
+    private LocalDateTime createdAt;
 
     // 채팅방 비활성화
     public void roomDeActivate() {
