@@ -32,11 +32,11 @@ public class LoggingFilter implements GlobalFilter, Ordered {
         HttpMethod reqMethod = exchange.getRequest().getMethod();
         String reqPath = exchange.getRequest().getPath().toString();
 
+        log.info("[ID: {}] [{}]: {} 요청이 들어왔어요.", reqId, reqMethod, reqPath);
+
         if (reqPath.contains(SWAGGER_PATH)) {
             return chain.filter(exchange);
         }
-
-        log.info("[ID: {}] [{}]: {} 요청이 들어왔어요.", reqId, reqMethod, reqPath);
 
         long startTime = System.currentTimeMillis();
 

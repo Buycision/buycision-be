@@ -15,12 +15,16 @@ ext {
 
 dependencies {
 	implementation project(':global-service')
+
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
 	// Spring Cloud Bus
 	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
+
+	// Chat-service
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	// Swagger3
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.7.0'
@@ -29,8 +33,6 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testImplementation 'org.mockito:mockito-core'
-	testImplementation 'org.mockito:mockito-junit-jupiter'
 }
 
 dependencyManagement {
