@@ -17,6 +17,8 @@ import project.globalservice.response.BaseResponse;
 @Slf4j
 public class ChatController {
 
+    // TODO : Webflux 로 migration
+
     private final ChatService chatService;
 
     @MessageMapping
