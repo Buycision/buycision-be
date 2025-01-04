@@ -8,5 +8,5 @@ import project.chatservice.domain.entity.Message;
 public interface MessageRepository extends MongoRepository<Message, String> {
 
     // 몽고디비에서 메세지를 조회(페이징, 정렬)
-    Page<Message> findByRoomIdOrderByCreateAtDesc(Long roomId, Pageable pageable);
+    Page<Message> findByRoomIdOrderByCreatedAtDesc(Long roomId, Pageable pageable);
 }

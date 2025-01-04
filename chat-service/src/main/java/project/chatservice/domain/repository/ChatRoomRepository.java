@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
-    Optional<ChatRoom> findByRoomId(String roomId);
+    Optional<ChatRoom> findByRoomId(Long roomId);
 
     // TODO : User 테이블 완성 시
 //    @Query("SELECT cr FROM chat_room cr WHERE (cr.user1.userId = :userId OR cr.user2.userId = :userId) AND cr.roomActive = TRUE")
