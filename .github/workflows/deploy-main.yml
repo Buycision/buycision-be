@@ -14,6 +14,7 @@ name: Deploy-main
 env:
   MAIN_NAME: buycision
 
+
 # 이벤트 트리거
 on:
   push:
@@ -94,24 +95,9 @@ jobs:
           username: ${{secrets.DOCKER_ID}}
           password: ${{secrets.DOCKER_TOKEN}}
 
-      # Docker 이미지, 빌드
-      # 아래 부분 cache 지정하여 빌드 속도 단축
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          platforms: linux/amd64
-          push: true
-          tags: |
-            ${{ secrets.DOCKER_ID }}/${{ env.CONTAINER_NAME }}:${{github.run_number}}
-            ${{ secrets.DOCKER_ID }}/${{ env.CONTAINER_NAME }}:latest
-          cache-from: type=gha    # gha=Github Action Cache
-          cache-to: type=gha,mode=max
-
-      #      # Docker-compose 다운
-      #      - name: Setup docker-compose
-      #        uses: KengoTODA/actions-setup-docker-compose@v1.2.3
+            # Docker-compose 다운
+      - name: Setup docker-compose
+        uses: KengoTODA/actions-setup-docker-compose@v1.2.3
 
       # 쉘 스크립트 생성
       - name: Create and execute deploy script
