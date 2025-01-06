@@ -23,7 +23,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      */
     private final StompHandler stompHandler;
 
-    @Value("${websocket.allowedOrigins}")
+    // FIXME : 일단은 강제 주입하는데 yml파일을 못 읽어옴 지금
+    @Value("${websocket.allowedOrigins:localhost:3000}")
     private String allowedOrigins;
 
     /**
