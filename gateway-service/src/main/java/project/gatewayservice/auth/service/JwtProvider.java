@@ -2,10 +2,7 @@ package project.gatewayservice.auth.service;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +28,19 @@ public class JwtProvider {
                 .signWith(generateKey(), SignatureAlgorithm.HS512)
                 .setExpiration(expireTime)
                 .compact();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            parseToken(token);
+        } catch (SecurityException | MalformedJwtException | ExpiredJwtException | UnsupportedJwtException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public String decodeToken(String token) {
+        return parseToken(token).getBody().getSubject();
     }
 
     private Key generateKey() {
