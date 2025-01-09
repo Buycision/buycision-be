@@ -4,20 +4,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import project.globalservice.jwt.JwtProvider;
+import project.gatewayservice.auth.service.JwtProvider;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-
+@Slf4j
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class AuthenticationSuccessHandler implements ServerAuthenticationSuccessHandler {
 
     private final JwtProvider jwtProvider;
@@ -26,18 +23,14 @@ public class AuthenticationSuccessHandler implements ServerAuthenticationSuccess
     public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
         String token = jwtProvider.createToken(authentication.getName());
 
-        log.info("Login successful. Username: {}", authentication.getName());
+        // test logging
+        log.info("Login Success: {}", authentication.getName());
 
-        Map<String, String> response = new HashMap<>();
-        response.put("accessToken", token);
-        response.put("message", "Login successful");
+        ServerHttpResponse response = webFilterExchange.getExchange().getResponse();
+        response.getHeaders().add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+        response.getHeaders().add("Authorization", token);
+        response.setStatusCode(HttpStatus.OK);
 
-        byte[] responseBody = response.toString().getBytes(StandardCharsets.UTF_8);
-
-        var responseHeaders = webFilterExchange.getExchange().getResponse();
-        responseHeaders.setStatusCode(HttpStatus.OK);
-        responseHeaders.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-
-        return responseHeaders.writeWith(Mono.just(responseHeaders.bufferFactory().wrap(responseBody)));
+        return response.setComplete();
     }
 }
