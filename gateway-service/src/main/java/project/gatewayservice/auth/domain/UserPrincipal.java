@@ -26,6 +26,6 @@ public record UserPrincipal(UserDto user, Map<String, Object> attributes) implem
 
     @Override
     public String getName() {
-        return "testName";
+        return user.id().toString();
     }
 }
