@@ -22,6 +22,9 @@ import reactor.core.publisher.Mono;
 public class LoggingFilter implements GlobalFilter, Ordered {
 
     private static final String SWAGGER_PATH = "/v3/api-docs";
+    private static final String USER_PATH = "/user";
+    private static final String CHAT_PATH = "/chat";
+    private static final String COMMUNITY_PATH = "/community";
 
     private final ObjectMapper objectMapper;
     private final ModifyResponseBodyGatewayFilterFactory modifyResponseBodyGatewayFilterFactory;
@@ -34,7 +37,9 @@ public class LoggingFilter implements GlobalFilter, Ordered {
 
         log.info("[ID: {}] [{}]: {} 요청이 들어왔어요.", reqId, reqMethod, reqPath);
 
-        if (reqPath.contains(SWAGGER_PATH)) {
+        // Exclude Filtering (상호 통신 간 필터링 때문에 응답 매핑 안됨)
+        if (reqPath.startsWith(SWAGGER_PATH) || reqPath.startsWith(USER_PATH) ||
+                reqPath.startsWith(CHAT_PATH) || reqPath.startsWith(COMMUNITY_PATH)) {
             return chain.filter(exchange);
         }
 

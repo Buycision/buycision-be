@@ -33,6 +33,4 @@ public class AuthController {
         response.getHeaders().setLocation(URI.create("/oauth2/authorization/google"));
         return response.setComplete();
     }
-
-    // TODO: callback method 구현하기
 }
