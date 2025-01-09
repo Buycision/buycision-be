@@ -17,13 +17,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-        http
+        return http
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
+                .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .authorizeExchange(authorize -> authorize
                         .pathMatchers("/", "/login/**").permitAll()
-                        .anyExchange().permitAll()
+                        .pathMatchers("/user/**").permitAll()
+                        .anyExchange().authenticated()
                 )
-                .oauth2Login(auth -> auth.authenticationSuccessHandler(authenticationSuccessHandler));
-
-        return http.build();
+                .oauth2Login(auth -> auth.authenticationSuccessHandler(authenticationSuccessHandler))
+                .build();
     }
 }

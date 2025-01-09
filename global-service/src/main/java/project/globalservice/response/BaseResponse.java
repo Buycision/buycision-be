@@ -16,12 +16,17 @@ public class BaseResponse<T> {
 
     private final String code;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_NULL) // NULL인 경우 제외
     private final T result;
 
     public BaseResponse(T result) {
         this.isSuccess = true;
         this.code = "2000";
         this.result = result;
+    }
+
+    @JsonProperty("isSuccess") // "success"가 추가되지 않도록 명시적으로 설정
+    public boolean isSuccess() {
+        return isSuccess;
     }
 }
