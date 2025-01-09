@@ -1,6 +1,5 @@
-package project.globalservice.jwt;
+package project.gatewayservice.auth.service;
 
-import project.globalservice.config.JwtConfig;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
@@ -11,6 +10,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import project.gatewayservice.auth.config.JwtConfig;
 
 import java.security.Key;
 import java.util.Base64;

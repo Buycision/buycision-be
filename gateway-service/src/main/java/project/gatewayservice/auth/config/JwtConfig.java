@@ -1,4 +1,4 @@
-package project.globalservice.config;
+package project.gatewayservice.auth.config;
 
 import lombok.Getter;
 import lombok.Setter;
