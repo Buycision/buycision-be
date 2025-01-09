@@ -16,15 +16,12 @@ import project.gatewayservice.filter.dto.ResponseBody;
 import project.globalservice.response.BaseResponse;
 import reactor.core.publisher.Mono;
 
+import static project.gatewayservice.filter.dto.GlobalPathConstants.*;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class LoggingFilter implements GlobalFilter, Ordered {
-
-    private static final String SWAGGER_PATH = "/v3/api-docs";
-    private static final String USER_PATH = "/user";
-    private static final String CHAT_PATH = "/chat";
-    private static final String COMMUNITY_PATH = "/community";
 
     private final ObjectMapper objectMapper;
     private final ModifyResponseBodyGatewayFilterFactory modifyResponseBodyGatewayFilterFactory;
