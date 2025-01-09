@@ -20,10 +20,10 @@ env:
 on:
   push:
     branches:
-      - gateway
+      - gateway/**
   pull_request:
     branches:
-      - gateway
+      - gateway/**
 
 jobs:
   Integration:

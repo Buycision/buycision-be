@@ -19,10 +19,10 @@ env:
 on:
   push:
     branches:
-      - discovery
+      - discovery/**
   pull_request:
     branches:
-      - discovery
+      - discovery/**
 
 jobs:
   Integration:

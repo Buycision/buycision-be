@@ -19,10 +19,10 @@ env:
 on:
   push:
     branches:
-      - config
+      - config/**
   pull_request:
     branches:
-      - config
+      - config/**
 
 jobs:
   Integration:
