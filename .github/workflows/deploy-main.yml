@@ -27,7 +27,6 @@ on:
 jobs:
   Integration:
     runs-on: ubuntu-latest
-
     steps:
       # 해당 브랜치 소스 코드 가져오기
       - name: Checkout code
@@ -57,13 +56,6 @@ jobs:
       # spring.profiles.active를 dev로 설정하여 Spring Boot 애플리케이션이 개발 환경 설정을 따르도록 지정.
       - name: create build file
         run: ./gradlew clean build -i --no-daemon -x test
-
-      # 이전 Job에서 업로드한 Jar file 다운로드
-      - name: Download a built Jar File
-        uses: actions/download-artifact@v4
-        with:
-          name: build
-          path: build/libs
 
       # push event일 경우 CD job에 jar file 업로드
       - name: (Push) Archive production artifacts
