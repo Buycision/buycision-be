@@ -58,20 +58,12 @@ jobs:
       - name: create build file
         run: ./gradlew clean build -i --no-daemon -x test
 
-      # Docker 이미지, 빌드
-      # 아래 부분 cache 지정하여 빌드 속도 단축
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v5
+      # 이전 Job에서 업로드한 Jar file 다운로드
+      - name: Download a built Jar File
+        uses: actions/download-artifact@v4
         with:
-          context: .
-          file: ./Dockerfile
-          platforms: linux/amd64
-          push: true
-          tags: |
-            ${{ secrets.DOCKER_ID }}/${{ env.CONTAINER_NAME }}:${{github.run_number}}
-            ${{ secrets.DOCKER_ID }}/${{ env.CONTAINER_NAME }}:latest
-          cache-from: type=gha    # gha=Github Action Cache
-          cache-to: type=gha,mode=max
+          name: build
+          path: build/libs
 
       # push event일 경우 CD job에 jar file 업로드
       - name: (Push) Archive production artifacts
@@ -109,6 +101,21 @@ jobs:
         with:
           username: ${{secrets.DOCKER_ID}}
           password: ${{secrets.DOCKER_TOKEN}}
+
+      # Docker 이미지, 빌드
+      # 아래 부분 cache 지정하여 빌드 속도 단축
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_ID }}/${{ env.CONTAINER_NAME }}:${{github.run_number}}
+            ${{ secrets.DOCKER_ID }}/${{ env.CONTAINER_NAME }}:latest
+          cache-from: type=gha    # gha=Github Action Cache
+          cache-to: type=gha,mode=max
 
       # 쉘 스크립트 생성
       - name: Create and execute deploy script
