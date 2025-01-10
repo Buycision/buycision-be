@@ -20,9 +20,6 @@ on:
   push:
     branches:
       - discovery/**
-  pull_request:
-    branches:
-      - discovery/**
 
 jobs:
   Integration:

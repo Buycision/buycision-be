@@ -20,9 +20,6 @@ on:
   push:
     branches:
       - user/**
-  pull_request:
-    branches:
-      - user/**
 
 jobs:
   Integration:

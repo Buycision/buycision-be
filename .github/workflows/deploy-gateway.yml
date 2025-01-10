@@ -21,9 +21,6 @@ on:
   push:
     branches:
       - gateway/**
-  pull_request:
-    branches:
-      - gateway/**
 
 jobs:
   Integration:
