@@ -1,4 +1,4 @@
-package project.communityservice.domain.entity;
+package project.communityservice.domain.calender.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package project.communityservice.domain.repository;
+package project.communityservice.domain.calender.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

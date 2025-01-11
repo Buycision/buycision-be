@@ -1,4 +1,4 @@
-package project.communityservice.domain.service.impl;
+package project.communityservice.domain.calender.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
