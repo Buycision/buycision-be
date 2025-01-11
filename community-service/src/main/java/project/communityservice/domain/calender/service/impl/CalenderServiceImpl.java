@@ -6,12 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import project.communityservice.domain.calender.dto.CalenderRequest;
 import project.communityservice.domain.calender.dto.CalenderResponse;
 import project.communityservice.domain.calender.repository.CalenderRepository;
-import project.communityservice.domain.calender.service.CommunityService;
+import project.communityservice.domain.calender.service.CalenderService;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CommunityServiceImpl implements CommunityService {
+public class CalenderServiceImpl implements CalenderService {
     private final CalenderRepository calenderRepository;
 
     @Override

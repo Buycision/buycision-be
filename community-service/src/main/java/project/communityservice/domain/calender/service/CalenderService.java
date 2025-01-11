@@ -3,7 +3,7 @@ package project.communityservice.domain.calender.service;
 import project.communityservice.domain.calender.dto.CalenderRequest;
 import project.communityservice.domain.calender.dto.CalenderResponse;
 
-public interface CommunityService {
+public interface CalenderService {
     // 일정 조회
     CalenderResponse getCalender(Long calenderId);
 
