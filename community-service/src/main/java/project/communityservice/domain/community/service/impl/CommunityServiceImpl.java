@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.communityservice.domain.community.dto.CommunityResponse;
 import project.communityservice.domain.community.service.CommunityService;
-import project.communityservice.domain.board.repository.CommunityRepository;
+import project.communityservice.domain.board.repository.BoardRepository;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class CommunityServiceImpl implements CommunityService {
-    private final CommunityRepository communityRepository;
+    private final BoardRepository communityRepository;
 
     @Override
     public List<CommunityResponse> getCommunityList() {

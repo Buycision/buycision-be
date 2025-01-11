@@ -15,13 +15,12 @@ import static lombok.AccessLevel.PROTECTED;
 @ToString(callSuper = true)
 @EqualsAndHashCode
 @SuperBuilder
-public class Community {
+public class Board {
 
     @Id
-    @GeneratedValue
-    private Long id; // 커뮤니티 아이디
+    private Long id; // 게시글 아이디
 
-    private String name; // 커뮤니티 이름
+    private String title; // 게시글 제목
 
-    private String description; // 커뮤니티 설명
+    private String content; // 게시글 내용
 }
