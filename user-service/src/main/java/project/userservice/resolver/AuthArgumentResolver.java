@@ -29,6 +29,10 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
         String userId = Objects.requireNonNull(request).getHeader(AUTH_HEADER);
 
-        return new AuthUser(Long.parseLong(userId));
+        if (userId.equals("Guest")) {
+            return new AuthUser(0L, false);
+        }
+
+        return new AuthUser(Long.parseLong(userId), true);
     }
 }

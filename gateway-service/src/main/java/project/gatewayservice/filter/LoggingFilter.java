@@ -16,15 +16,12 @@ import project.gatewayservice.filter.dto.ResponseBody;
 import project.globalservice.response.BaseResponse;
 import reactor.core.publisher.Mono;
 
+import static project.gatewayservice.filter.dto.GlobalPathConstants.*;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class LoggingFilter implements GlobalFilter, Ordered {
-
-    private static final String SWAGGER_PATH = "/v3/api-docs";
-    private static final String USER_PATH = "/user";
-    private static final String CHAT_PATH = "/chat";
-    private static final String COMMUNITY_PATH = "/community";
 
     private final ObjectMapper objectMapper;
     private final ModifyResponseBodyGatewayFilterFactory modifyResponseBodyGatewayFilterFactory;
@@ -37,9 +34,7 @@ public class LoggingFilter implements GlobalFilter, Ordered {
 
         log.info("[ID: {}] [{}]: {} 요청이 들어왔어요.", reqId, reqMethod, reqPath);
 
-        // Exclude Filtering (상호 통신 간 필터링 때문에 응답 매핑 안됨)
-        if (reqPath.startsWith(SWAGGER_PATH) || reqPath.startsWith(USER_PATH) ||
-                reqPath.startsWith(CHAT_PATH) || reqPath.startsWith(COMMUNITY_PATH)) {
+        if (AUTH_WHITELIST.stream().anyMatch(reqPath::startsWith)) {
             return chain.filter(exchange);
         }
 

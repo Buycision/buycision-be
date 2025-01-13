@@ -2,6 +2,7 @@ package project.userservice.domain.controller;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,8 @@ public class UserController {
 
     @Operation(summary = "사용자 정보 조회", description = "현재 로그인한 사용자의 정보를 반환합니다.")
     @GetMapping("/info")
-    public ResponseEntity<UserInfoResponse> getUserInfo(@Auth AuthUser authUser) {
+    public ResponseEntity<UserInfoResponse> getUserInfo(
+            @Parameter(hidden = true) @Auth AuthUser authUser) {
         return ResponseEntity.ok(userService.getUserInfo(authUser.userId()));
     }
 
