@@ -8,13 +8,11 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
-import project.globalservice.jwt.JwtProvider;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class StompHandler implements ChannelInterceptor {
-    private final JwtProvider jwtProvider;
 
     /**
      * WebSocket 메세지가 클라이언트와 서버 간에 전송되기 전에 가로채어 JWT인증을 처리
@@ -34,9 +32,9 @@ public class StompHandler implements ChannelInterceptor {
         log.info("token: {}", accessor.getNativeHeader("Authorization"));
 
         if(StompCommand.CONNECT.equals(accessor.getCommand())) {
-            if (!jwtProvider.validateToken(accessor.getFirstNativeHeader("Authorization"))) {
-                throw new IllegalArgumentException();
-            }
+//            if (!jwtProvider.validateToken(accessor.getFirstNativeHeader("Authorization"))) {
+//                throw new IllegalArgumentException();
+//            }
         }
         return message;
     }
