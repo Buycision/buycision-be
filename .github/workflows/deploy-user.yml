@@ -19,10 +19,7 @@ env:
 on:
   push:
     branches:
-      - user
-  pull_request:
-    branches:
-      - user
+      - user/**
 
 jobs:
   Integration:
