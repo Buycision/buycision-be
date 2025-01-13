@@ -24,13 +24,13 @@ public class AuthenticationSuccessHandler implements ServerAuthenticationSuccess
         String token = jwtProvider.createToken(authentication.getName());
 
         // test logging
-        log.info("Login Success: {}", authentication.getName());
+        log.info("Login Success token: {}", token);
 
         ServerHttpResponse response = webFilterExchange.getExchange().getResponse();
         response.getHeaders().add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
         response.getHeaders().add("Authorization", token);
         response.setStatusCode(HttpStatus.OK);
 
-        return response.setComplete();
+        return webFilterExchange.getChain().filter(webFilterExchange.getExchange());
     }
 }
