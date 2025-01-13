@@ -1,9 +1,19 @@
 package project.gatewayservice.filter.dto;
 
+import lombok.Getter;
+
+import java.util.Set;
+
+@Getter
 public class GlobalPathConstants {
 
-    public static final String SWAGGER_PATH = "/v3/api-docs";
-    public static final String USER_PATH = "/user";
-    public static final String CHAT_PATH = "/chat";
-    public static final String COMMUNITY_PATH = "/community";
+    public static final Set<String> AUTH_WHITELIST = Set.of(
+            "/login",
+            "/v3/api-docs",
+            "/user/v3/api-docs",
+            "/chat/v3/api-docs",
+            "/community/v3/api-docs",
+            "/user/email",
+            "/user/register"
+    );
 }

@@ -34,9 +34,7 @@ public class LoggingFilter implements GlobalFilter, Ordered {
 
         log.info("[ID: {}] [{}]: {} 요청이 들어왔어요.", reqId, reqMethod, reqPath);
 
-        // Exclude Filtering (상호 통신 간 필터링 때문에 응답 매핑 안됨)
-        if (reqPath.startsWith(SWAGGER_PATH) || reqPath.startsWith(USER_PATH) ||
-                reqPath.startsWith(CHAT_PATH) || reqPath.startsWith(COMMUNITY_PATH)) {
+        if (AUTH_WHITELIST.stream().anyMatch(reqPath::startsWith)) {
             return chain.filter(exchange);
         }
 
