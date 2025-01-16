@@ -21,8 +21,6 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    private String password;
-
     private String phoneNumber;
 
     private String nickname;
@@ -44,4 +42,8 @@ public class User {
     private LocalDateTime updatedAt;
 
     private LocalDateTime deletedAt;
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

@@ -3,39 +3,56 @@ package project.userservice.domain.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.userservice.domain.dto.request.UserRenewPasswordRequest;
+import project.globalservice.exception.BaseException;
 import project.userservice.domain.dto.request.UserSignUpRequest;
 import project.userservice.domain.dto.request.UserUpdateRequest;
 import project.userservice.domain.dto.response.UserInfoResponse;
-import project.userservice.domain.dto.response.UserSignUpResponse;
+import project.userservice.domain.entity.User;
+import project.userservice.domain.exception.UserExceptionType;
+import project.userservice.domain.repository.UserRepository;
 import project.userservice.domain.service.UserService;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Override
-    public UserSignUpResponse register(UserSignUpRequest request) {
-        return null;
-    }
+    private final UserRepository userRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public UserInfoResponse getUserInfo(Long userId) {
-        return null;
+        User user = userRepository.getUserById(userId);
+
+        return UserInfoResponse.from(user);
     }
 
     @Override
-    public void updateUserNickname(Long userId, UserUpdateRequest request) {
-
+    @Transactional(readOnly = true)
+    public UserInfoResponse getUserInfoByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(UserInfoResponse::from)
+                .orElseThrow(() -> new BaseException(UserExceptionType.USER_NOT_FOUND));
     }
 
     @Override
-    public void updateUserPassword(Long userId, UserRenewPasswordRequest request) {
+    @Transactional
+    public UserInfoResponse updateUserNickname(Long userId, UserUpdateRequest request) {
+        User user = userRepository.getUserById(userId);
 
+        user.updateNickname(request.nickname());
+
+        return UserInfoResponse.from(user);
     }
 
     @Override
-    public void withdrawUser(Long userId) {
+    @Transactional
+    public UserInfoResponse registerUser(UserSignUpRequest request) {
+        if (userRepository.existsByEmail(request.email())) {
+            throw new BaseException(UserExceptionType.DUPLICATE_EMAIL);
+        }
 
+        User user = userRepository.save(request.toEntity());
+
+        return UserInfoResponse.from(user);
     }
 }

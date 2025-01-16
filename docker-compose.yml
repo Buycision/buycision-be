@@ -13,7 +13,7 @@ services:
     build:
       context: ./config-service
       dockerfile: Dockerfile
-    image: hyeonseong1010/config-service
+    image: hyeonseong1010/config-service:latest
     container_name: config-service
     restart: always
 
@@ -35,7 +35,7 @@ services:
     build:
       context: ./discovery-service
       dockerfile: Dockerfile
-    image: hyeonseong1010/discovery-service
+    image: hyeonseong1010/discovery-service:latest
     container_name: discovery-service
     restart: always
     environment:
@@ -52,7 +52,7 @@ services:
     build:
       context: ./gateway-service
       dockerfile: Dockerfile
-    image: hyeonseong1010/gateway-service
+    image: hyeonseong1010/gateway-service:latest
     container_name: gateway-service
     restart: always
     environment:
@@ -88,7 +88,7 @@ services:
     build:
       context: ./chat-service
       dockerfile: Dockerfile
-    image: chat-service
+    image: hyeonseong1010/chat-service:latest
     container_name: chat-service
     restart: unless-stopped
     environment:

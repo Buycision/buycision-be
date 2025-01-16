@@ -19,10 +19,7 @@ env:
 on:
   push:
     branches:
-      - user
-  pull_request:
-    branches:
-      - user
+      - user/**
 
 jobs:
   Integration:
@@ -118,10 +115,6 @@ jobs:
       - name: Create and execute deploy script
         run: |
           echo '#!/bin/bash' > deploy.sh
-          echo 'cd ${{env.MAIN_NAME}}-be/${{env.CONTAINER_NAME}}' >> deploy.sh
-          echo 'sudo docker build -t ${{secrets.DOCKER_ID}}/${{env.CONTAINER_NAME}}:latest .' >> deploy.sh
-          echo 'sudo docker push ${{secrets.DOCKER_ID}}/${{env.CONTAINER_NAME}}:latest' >> deploy.sh
-          echo 'cd ..' >> deploy.sh
           echo 'sudo docker-compose stop ${{env.CONTAINER_NAME}}' >> deploy.sh
           echo 'sudo docker-compose rm ${{env.CONTAINER_NAME}}' >> deploy.sh
           echo 'sudo docker-compose -f docker-compose.yml up --build -d ${{env.CONTAINER_NAME}}' >> deploy.sh

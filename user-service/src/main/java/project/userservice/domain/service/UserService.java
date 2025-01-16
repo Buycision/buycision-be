@@ -1,20 +1,16 @@
 package project.userservice.domain.service;
 
-import project.userservice.domain.dto.request.UserRenewPasswordRequest;
 import project.userservice.domain.dto.request.UserSignUpRequest;
 import project.userservice.domain.dto.request.UserUpdateRequest;
 import project.userservice.domain.dto.response.UserInfoResponse;
-import project.userservice.domain.dto.response.UserSignUpResponse;
 
 public interface UserService {
 
-    UserSignUpResponse register(UserSignUpRequest request);
-
     UserInfoResponse getUserInfo(Long userId);
 
-    void updateUserNickname(Long userId, UserUpdateRequest request);
+    UserInfoResponse getUserInfoByEmail(String email);
 
-    void updateUserPassword(Long userId, UserRenewPasswordRequest request);
+    UserInfoResponse updateUserNickname(Long userId, UserUpdateRequest request);
 
-    void withdrawUser(Long userId);
+    UserInfoResponse registerUser(UserSignUpRequest request);
 }
