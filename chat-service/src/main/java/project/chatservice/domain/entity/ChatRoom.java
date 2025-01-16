@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.userservice.domain.entity.User;
 
 import java.time.LocalDateTime;
 
@@ -22,13 +23,13 @@ public class ChatRoom {
     private Long roomId;
 
     // FIXME: 유저 테이블 구현되면 그때 연결
-//    @ManyToOne
-//    @JoinColumn(name = "user1_id", nullable = false)
-//    private User user1;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "user2_id")
-//    private User user2;
+    @ManyToOne
+    @JoinColumn(name = "user1_id", nullable = false)
+    private User user1;
+
+    @ManyToOne
+    @JoinColumn(name = "user2_id")
+    private User user2;
 
     @Column(nullable = false)
     private Boolean roomActive;
