@@ -9,7 +9,7 @@ import project.communityservice.domain.calender.repository.CalenderRepository;
 import project.communityservice.domain.calender.service.CalenderService;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CalenderServiceImpl implements CalenderService {
     private final CalenderRepository calenderRepository;
@@ -20,16 +20,19 @@ public class CalenderServiceImpl implements CalenderService {
     }
 
     @Override
+    @Transactional
     public CalenderResponse addCalender(CalenderRequest calenderRequest) {
         return null;
     }
 
     @Override
+    @Transactional
     public CalenderResponse updateCalender(CalenderRequest calenderRequest) {
         return null;
     }
 
     @Override
+    @Transactional
     public void deleteCalender(Long calenderId) {
 
     }
