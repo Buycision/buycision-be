@@ -1,0 +1,46 @@
+group = 'project'
+version = '0.0.1-SNAPSHOT'
+
+jar {
+    enabled = false
+}
+
+bootJar {
+    enabled = true
+}
+
+ext {
+    set('springCloudVersion', "2024.0.0")
+}
+
+dependencies {
+    implementation project(':global-service')
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Spring Cloud Bus
+    implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
+
+    // Swagger3
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.7.0'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.mockito:mockito-junit-jupiter'
+
+    // H2 Database
+    implementation 'com.h2database:h2'
+
+    // JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
