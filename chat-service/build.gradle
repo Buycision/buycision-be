@@ -15,10 +15,13 @@ ext {
 
 dependencies {
 	implementation project(':global-service')
+	implementation project(':gateway-service')
+	implementation project(':user-service')
 
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	// Spring Cloud Bus
 	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
@@ -28,7 +31,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'com.mysql:mysql-connector-j'
-	runtimeOnly 'com.h2database:h2'
+	testRuntimeOnly 'com.h2database:h2'
 
 	// Web-Socket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
@@ -38,7 +41,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
 	//Spring webClient
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+//	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
 	// Swagger3
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.7.0'
