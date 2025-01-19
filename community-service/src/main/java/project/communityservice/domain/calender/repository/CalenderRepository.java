@@ -6,4 +6,7 @@ import project.communityservice.domain.calender.entity.Calender;
 
 @Repository
 public interface CalenderRepository extends JpaRepository<Calender, Long> {
+    default Calender getByIdOrThorw(Long id){
+        return findById(id).orElseThrow(null);
+    }
 }

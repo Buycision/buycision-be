@@ -1,5 +1,6 @@
 package project.communityservice.domain.calender.entity;
 
+import com.rabbitmq.client.LongString;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -24,8 +25,16 @@ public class Calender extends BaseEntity {
 
     private String content; // 일정 설명
 
-    public static Calender from(String title, String content) {
+    public static Calender createFrom(String title, String content) {
         return Calender.builder()
+                .title(title)
+                .content(content)
+                .build();
+    }
+
+    public static Calender updateFrom(Long id, String title, String content) {
+        return Calender.builder()
+                .id(id)
                 .title(title)
                 .content(content)
                 .build();
