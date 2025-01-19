@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import project.communityservice.global.baseEntity.BaseEntity;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -13,9 +14,8 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @Entity
 @ToString(callSuper = true)
-@EqualsAndHashCode
 @SuperBuilder
-public class Calender {
+public class Calender extends BaseEntity {
 
     @Id
     private Long id; // 일정 아이디
@@ -23,4 +23,11 @@ public class Calender {
     private String title; // 일정 제목
 
     private String content; // 일정 설명
+
+    public static Calender from(String title, String content) {
+        return Calender.builder()
+                .title(title)
+                .content(content)
+                .build();
+    }
 }
