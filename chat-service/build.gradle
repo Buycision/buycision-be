@@ -15,7 +15,7 @@ ext {
 
 dependencies {
 	implementation project(':global-service')
-	implementation project(':gateway-service')
+//	implementation project(':gateway-service')
 	implementation project(':user-service')
 
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
