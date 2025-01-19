@@ -1,0 +1,65 @@
+# secrets 토큰
+# DOCKER
+### DOCKER_ID
+### DOCKER_TOKEN
+# VM인스턴스
+### GCP_HOST
+### GCP_SSH_KEY
+### GCP_USERNAME
+###
+
+name: CI for submodule
+
+# 이벤트 트리거
+on:
+  push:
+    branches:
+      - config/*
+      - gateway/*
+      - discovery/*
+      - user/*
+      - chat/*
+      - community/*
+      - map/*
+      - quote/*
+
+jobs:
+  Integration:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 해당 브랜치 소스 코드 가져오기
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # 자바 다운로드
+      - name: JDK install
+        uses: actions/setup-java@v1
+        with:
+          java-version: '17'
+
+      # Gradle Package Caching
+      # caching 을 하면 시간이 덜 소모되어 빠르게 가능하다는 장점 존재
+      - name: Caching Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+
+      # Gradle 권한 변경
+      - name: Grant execute permission for gradle
+        run: chmod +x ./gradlew
+
+      # develop 브랜치일 경우 dev 환경 빌드
+      # spring.profiles.active를 dev로 설정하여 Spring Boot 애플리케이션이 개발 환경 설정을 따르도록 지정.
+      - name: create build file
+        run: ./gradlew clean build -i --no-daemon -x test
+
+      # 깃허브에 소스코드 옮기기
+      - name: (Push) Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: build/libs/*.jar
