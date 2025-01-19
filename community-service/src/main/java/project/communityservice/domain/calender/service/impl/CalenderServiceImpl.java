@@ -3,10 +3,16 @@ package project.communityservice.domain.calender.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.communityservice.domain.calender.dto.request.CalenderRequest;
+import project.communityservice.domain.calender.dto.response.CalenderResponse;
+import project.communityservice.domain.calender.entity.Calender;
 import project.communityservice.domain.calender.repository.CalenderRepository;
 import project.communityservice.domain.calender.service.CalenderService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -16,27 +22,42 @@ public class CalenderServiceImpl implements CalenderService {
 
 
     @Override
-    public List<project.communityservice.domain.calender.dto.response.CalenderResponse> listCalender() {
-        return List.of();
+    public List<CalenderResponse> listCalender() {
+        List<Calender> calenders = calenderRepository.findAll();
+
+        return CalenderResponse.listOf(calenders);
     }
 
     @Override
-    public project.communityservice.domain.calender.dto.response.CalenderResponse getCalender(Long id) {
-        return null;
+    public CalenderResponse getCalender(Long id) {
+        Calender calender = calenderRepository.getByIdOrThorw(id);
+
+        return CalenderResponse.of(calender);
     }
 
     @Override
-    public project.communityservice.domain.calender.dto.response.CalenderResponse createCalender() {
-        return null;
+    public CalenderResponse createCalender(String title, String content) {
+        Calender calender = Calender.createFrom(title, content);
+
+        calenderRepository.save(calender);
+
+        return CalenderResponse.of(calender);
     }
 
     @Override
-    public project.communityservice.domain.calender.dto.response.CalenderResponse modifyCalender(project.communityservice.domain.calender.dto.request.CalenderRequest calenderRequest) {
-        return null;
+    public CalenderResponse modifyCalender(Long id, String title, String content) {
+        Calender calender = calenderRepository.getByIdOrThorw(id);
+
+        Calender newCalender = Calender.updateFrom(calender.getId(), title, content);
+
+        calenderRepository.save(newCalender);
+
+        return CalenderResponse.of(newCalender);
     }
 
     @Override
-    public void deleteCalender(Long calenderId) {
-
+    public void deleteCalender(Long id) {
+        Calender calender = calenderRepository.getByIdOrThorw(id);
+        calenderRepository.delete(calender);
     }
 }

@@ -12,12 +12,12 @@ public interface CalenderService {
     CalenderResponse getCalender(Long id);
 
     // 일정 등록
-    CalenderResponse createCalender();
+    CalenderResponse createCalender(String name, String content);
 
     // 일정 수정
-    CalenderResponse modifyCalender(CalenderRequest calenderRequest);
+    CalenderResponse modifyCalender(Long id, String name, String content);
 
     // 일정 삭제
-    void deleteCalender(Long calenderId);
+    void deleteCalender(Long id);
 
 }
