@@ -7,5 +7,5 @@ public interface ChatService {
 
     void handleMessage(MessageRequestDto chatMessageDto);
 
-    ChatResponseDto getMesages(String authorizationHeader, Long roomId, int size, int page);
+    ChatResponseDto getMessages(String authorizationHeader, Long roomId, int size, int page);
 }

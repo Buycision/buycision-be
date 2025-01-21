@@ -63,7 +63,7 @@ public class ChatServiceUseCase implements ChatService {
      * @return
      */
     @Override
-    public ChatResponseDto getMesages(String authorizationHeader, Long roomId, int size, int page) {
+    public ChatResponseDto getMessages(String authorizationHeader, Long roomId, int size, int page) {
 
         ChatRoom chatRoom = validateChatRoom(roomId);
 
