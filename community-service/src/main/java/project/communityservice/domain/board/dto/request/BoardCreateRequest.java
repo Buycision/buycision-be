@@ -1,12 +1,8 @@
 package project.communityservice.domain.board.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
+public record BoardCreateRequest(
+        String title,
+        String content
+){
 
-@Getter
-@Setter
-public class BoardCreateRequest {
-    private String title;
-    private String content;
 }

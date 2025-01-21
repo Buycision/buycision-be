@@ -1,12 +1,27 @@
 package project.communityservice.domain.board.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import project.communityservice.domain.board.dto.BoardDTO;
 import project.communityservice.domain.board.entity.Board;
 
-@Getter
-@AllArgsConstructor
-public class BoardResponse {
-    private final BoardDTO board;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+public record BoardResponse (
+        Long id,
+        String title,
+        String content
+){
+    public static BoardResponse of(Board board) {
+        return new BoardResponse(
+                board.getId(),
+                board.getTitle(),
+                board.getContent()
+        );
+    }
+
+    public static List<BoardResponse> listOf(List<Board> boards) {
+        return boards.stream()
+                .map(BoardResponse::of)
+                .collect(Collectors.toList());
+    }
 }
