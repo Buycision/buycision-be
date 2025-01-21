@@ -1,6 +1,8 @@
 package project.communityservice.domain.board.controller;
 
+import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.communityservice.domain.board.dto.BoardDTO;
 import project.communityservice.domain.board.dto.request.BoardCreateRequest;
@@ -25,42 +27,42 @@ public class ApiV1BoardController {
 
     // 게시글 목록
     @GetMapping
-    public RsData<BoardsResponse> boardList(){
+    public ResponseEntity<BoardsResponse> boardList(){
         List<BoardDTO> boardList = boardService.getBoards();
 
-        return RsData.of("200", "게시글 목록 조회", new BoardsResponse(boardList));
+        return ResponseEntity.ok(new BoardsResponse(boardList));
     }
 
     // 게시물 단건 조회
     @GetMapping("/{id}")
-    public RsData<BoardResponse> board(@PathVariable("id") Long id){
+    public ResponseEntity<BoardResponse> board(@PathVariable("id") Long id){
         BoardDTO boardDTO = boardService.getBoard(id);
 
-        return RsData.of("200", "게시글 단건 조회", new BoardResponse(boardDTO));
+        return ResponseEntity.ok(new BoardResponse(boardDTO));
     }
 
     // 게시물 등록
     @PostMapping
-    public RsData<BoardCreateResponse> createBoard(@RequestBody BoardCreateRequest boardCreateRequest){
+    public ResponseEntity<BoardCreateResponse> createBoard(@RequestBody BoardCreateRequest boardCreateRequest){
         BoardDTO boardDTO = boardService.createBoard(boardCreateRequest.getTitle(), boardCreateRequest.getContent());
 
-        return RsData.of("200", "게시글 등록", new BoardCreateResponse(boardDTO));
+        return ResponseEntity.ok(new BoardCreateResponse(boardDTO));
     }
 
     // 게시물 수정
     // Put 전체 , Patch 일정 부분
     @PatchMapping("/{id}")
-    public RsData<BoardUpdateResponse> updateBoard(@RequestBody BoardUpdateRequest boardUpdateRequest, @PathVariable("id") Long id){
+    public ResponseEntity<BoardUpdateResponse> updateBoard(@RequestBody BoardUpdateRequest boardUpdateRequest, @PathVariable("id") Long id){
         Board board = boardRepository.getByIdOrThrow(id);
 
         BoardDTO boardDTO = boardService.updateBoard(board, boardUpdateRequest.getTitle(), boardUpdateRequest.getContent());
 
-        return RsData.of("200", "게시글 수정", new BoardUpdateResponse(boardDTO));
+        return ResponseEntity.ok(new BoardUpdateResponse(boardDTO));
     }
 
     // 게시물 삭제
     @DeleteMapping("/{id}")
-    public RsData<BoardResponse> deleteBoard(@PathVariable("id") Long id){
+    public ResponseEntity<BoardResponse> deleteBoard(@PathVariable("id") Long id){
 
         Board board = boardRepository.getByIdOrThrow(id);
 
@@ -68,6 +70,6 @@ public class ApiV1BoardController {
 
         BoardDTO boardDTO = new BoardDTO(board);
 
-        return RsData.of("200", "게시글 삭제", new BoardResponse(boardDTO));
+        return ResponseEntity.ok(new BoardResponse(boardDTO));
     }
 }
