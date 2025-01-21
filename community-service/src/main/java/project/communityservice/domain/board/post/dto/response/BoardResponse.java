@@ -1,9 +1,8 @@
-package project.communityservice.domain.board.dto.response;
+package project.communityservice.domain.board.post.dto.response;
 
-import project.communityservice.domain.board.entity.Board;
+import project.communityservice.domain.board.post.entity.Board;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public record BoardResponse (
