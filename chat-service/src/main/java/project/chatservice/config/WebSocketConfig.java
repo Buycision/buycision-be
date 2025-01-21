@@ -23,9 +23,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      */
     private final StompHandler stompHandler;
 
-    // FIXME : 일단은 강제 주입하는데 yml파일을 못 읽어옴 지금
-    @Value("${websocket.allowedOrigins:localhost:3000}")
-    private String allowedOrigins;
+    // FIXME : 일단은 와일드 카드로 주입하는데 yml파일을 못 읽어옴 지금
+//    @Value("${websocket.allowedOrigins:localhost:3000}")
+//    private String allowedOrigins;
 
     /**
      * STOMP 엔드포인트 등록
@@ -34,7 +34,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/chat")
-                .setAllowedOrigins(allowedOrigins)
+                .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
 
@@ -47,9 +47,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
 
-        registry.setApplicationDestinationPrefixes("/pub");
+        registry.setApplicationDestinationPrefixes("/pub"); //클라이언트 -> 서버
 
-        registry.enableSimpleBroker("/sub");
+        registry.enableSimpleBroker("/sub"); //서버 -> 클라이언트
     }
 
     /**

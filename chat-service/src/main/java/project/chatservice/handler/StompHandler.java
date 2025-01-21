@@ -25,16 +25,13 @@ public class StompHandler implements ChannelInterceptor {
      */
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-
-        log.info("message: {}", message);
-        log.info("header: {}", message.getHeaders());
-        log.info("token: {}", accessor.getNativeHeader("Authorization"));
-
-        if(StompCommand.CONNECT.equals(accessor.getCommand())) {
-//            if (!jwtProvider.validateToken(accessor.getFirstNativeHeader("Authorization"))) {
-//                throw new IllegalArgumentException();
-//            }
+        try {
+            StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+            log.info("Received WebSocket message: {}", message.getHeaders());
+            // 필요한 경우 추가 처리 로직
+        } catch (Exception e) {
+            log.error("WebSocket 핸들링 중 오류 발생: ", e);
+            throw e; // 예외를 처리하고 로그를 남김
         }
         return message;
     }
