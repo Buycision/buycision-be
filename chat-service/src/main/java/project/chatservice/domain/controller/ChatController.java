@@ -34,7 +34,7 @@ public class ChatController {
             @RequestParam Long roomId,
             @RequestParam int size,
             @RequestParam int page) {
-        ChatResponseDto responseDto = chatService.getMesages(authorizationHeader, roomId, size, page);
+        ChatResponseDto responseDto = chatService.getMessages(authorizationHeader, roomId, size, page);
         return new BaseResponse<>(responseDto);
     }
 
