@@ -45,6 +45,7 @@ public class Community extends BaseEntity {
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
+    @Builder.Default
     private List<Participant> participant = new ArrayList<>();
 
     // 커뮤니티 생성

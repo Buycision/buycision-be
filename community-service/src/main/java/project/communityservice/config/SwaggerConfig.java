@@ -17,7 +17,7 @@ public class SwaggerConfig {
                 .info(new io.swagger.v3.oas.models.info.Info()
                         .title("Chat API")
                         .version("v1")
-                        .description("채팅 서비스 API"))
+                        .description("커뮤니티 서비스 API"))
                 .openapi("3.0.1");
     }
 }
