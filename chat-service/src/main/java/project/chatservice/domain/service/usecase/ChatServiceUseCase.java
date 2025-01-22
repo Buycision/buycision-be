@@ -16,11 +16,11 @@ import project.chatservice.domain.entity.MessageType;
 import project.chatservice.domain.repository.ChatRoomRepository;
 import project.chatservice.domain.repository.MessageRepository;
 import project.chatservice.domain.service.ChatService;
+import project.chatservice.domain.service.UserFeignClient;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,12 +30,43 @@ public class ChatServiceUseCase implements ChatService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final MessageRepository messageRepository;
+    private final UserFeignClient userFeignClient;
 
+    /**
+     * 채팅 메시지 전송 처리
+     * 1) sender, receiver 유효성 검사 (동일 ID, 탈퇴/존재 X 등)
+     * 2) roomId가 없으면 (sender, receiver)로 기존 채팅방 조회 → 없으면 신규 생성
+     * 3) 메시지 MongoDB 저장
+     * 4) 전송 결과를 MessageResponse로 반환
+     * @param request
+     * @param sessionId
+     * @param nickname
+     * @return
+     */
     @Override
     public MessageResponse processMessage(MessageRequest request, String sessionId, String nickname) {
-        // 메시지 처리 로직
+        // 사용자 유효성 검사
+        validateUsers(request.userId(), request.receiverId());
+
+        // roomId 여부에 따라 채팅방 조회/생성
+        ChatRoom chatRoom;
+        if (request.roomId() == null) {
+            chatRoom = chatRoomRepository.findActiveChatRoom(request.userId(), request.receiverId())
+                    .orElseGet(() -> {
+                        // 기존 채팅방이 없으므로 새로 생성
+                        ChatRoom newRoom = ChatRoom.builder()
+                                .sender(request.userId())
+                                .receiver(request.receiverId())
+                                .build();
+                        return chatRoomRepository.save(newRoom);
+                    });
+        } else {
+            chatRoom = validateChatRoom(request.roomId());
+        }
+
+        // 메시지 DB 저장
         Message message = Message.builder()
-                .roomId(request.roomId())
+                .roomId(chatRoom.getRoomId())
                 .senderId(request.userId())
                 .content(request.content())
                 .createdAt(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
@@ -43,21 +74,36 @@ public class ChatServiceUseCase implements ChatService {
 
         messageRepository.save(message);
 
+        // 클라이언트로 반환할 응답
         return MessageResponse.builder()
                 .type(MessageType.CHAT)
                 .content(request.content())
                 .sessionId(sessionId)
                 .nickname(nickname)
+                .roomId(chatRoom.getRoomId())
                 .build();
     }
 
+    /**
+     * 채팅 메시지 목록 조회
+     * 1) roomId로 채팅방 유효성 확인
+     * 2) MongoDB에서 메시지 페이징 조회
+     * 3) ChatResponseDto 형태로 반환
+     * @param authorizationHeader
+     * @param roomId
+     * @param size
+     * @param page
+     * @return
+     */
     @Override
     public ChatResponseDto getMessages(String authorizationHeader, Long roomId, int size, int page) {
-        // 채팅 메시지 조회 로직
         ChatRoom chatRoom = validateChatRoom(roomId);
 
-        Page<Message> messages = messageRepository.findByRoomIdOrderByCreatedAtDesc(roomId, PageRequest.of(page, size));
+        Page<Message> messages = messageRepository.findByRoomIdOrderByCreatedAtDesc(
+                roomId, PageRequest.of(page, size)
+        );
 
+        // Message -> MessageRequest 형태로 변환 (receiverId 추론)
         List<MessageRequest> chatList = messages.getContent().stream()
                 .map(m -> MessageRequest.builder()
                         .content(m.getContent())
@@ -67,6 +113,7 @@ public class ChatServiceUseCase implements ChatService {
                         .build())
                 .collect(Collectors.toList());
 
+        // 페이징 정보
         ChatPageResponseDto pageableDto = ChatPageResponseDto.builder()
                 .size(size)
                 .page(page)
@@ -74,6 +121,7 @@ public class ChatServiceUseCase implements ChatService {
                 .totalElements(messages.getTotalElements())
                 .build();
 
+        // 예시로 roomActive, nickname 정도만
         ChatUserResponseDto userDto = new ChatUserResponseDto("사용자 닉네임", chatRoom.getRoomActive());
 
         return ChatResponseDto.builder()
@@ -83,12 +131,16 @@ public class ChatServiceUseCase implements ChatService {
                 .build();
     }
 
+    /**
+     * roomId로 채팅방 유효성 검사
+     * - 존재하는지
+     * - 활성화된 방인지
+     * @param roomId
+     * @return
+     */
     private ChatRoom validateChatRoom(Long roomId) {
-        Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findByRoomId(roomId);
-        if (optionalChatRoom.isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 채팅방입니다. roomId=" + roomId);
-        }
-        ChatRoom chatRoom = optionalChatRoom.get();
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 채팅방입니다. roomId=" + roomId));
 
         if (!chatRoom.getRoomActive()) {
             throw new IllegalStateException("이미 비활성화된 채팅방입니다. roomId=" + roomId);
@@ -96,11 +148,33 @@ public class ChatServiceUseCase implements ChatService {
         return chatRoom;
     }
 
-    private Long extractReceiverId(ChatRoom chatRoom, Long senderId) {
-        if (chatRoom.getSender().equals(senderId)) {
-            return chatRoom.getReceiver();
-        } else {
-            return chatRoom.getSender();
+    /**
+     * senderId, receiverId 유효성 검사
+     * - 동일 아이디인지(자기 자신에게 보내는 경우)
+     * - userFeignClient.isUserValid(...) 로 존재 여부 확인
+     * @param senderId
+     * @param receiverId
+     */
+    private void validateUsers(Long senderId, Long receiverId) {
+        if (senderId.equals(receiverId)) {
+            throw new IllegalArgumentException("동일한 사용자에게 메시지를 보낼 수 없습니다.");
         }
+        boolean senderValid = userFeignClient.isUserValid(senderId);
+        boolean receiverValid = userFeignClient.isUserValid(receiverId);
+
+        if (!senderValid || !receiverValid) {
+            throw new IllegalArgumentException("잘못된 사용자 정보입니다. senderId="
+                    + senderId + ", receiverId=" + receiverId);
+        }
+    }
+
+    /**
+     * 메시지가 DB에서 꺼내질 때 receiverId를 추론하는 메서드
+     * (현재 1:1 구조이므로 senderId와 반대되는 사용자)
+     */
+    private Long extractReceiverId(ChatRoom chatRoom, Long senderId) {
+        return (chatRoom.getSender().equals(senderId))
+                ? chatRoom.getReceiver()
+                : chatRoom.getSender();
     }
 }
