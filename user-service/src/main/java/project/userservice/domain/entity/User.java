@@ -33,7 +33,7 @@ public class User {
     private Authority authority;
 
     @Enumerated(EnumType.STRING)
-    private OAuthType oAuthType;
+    private OAuthType oauthType;
 
     @CreatedDate
     private LocalDateTime createdAt;

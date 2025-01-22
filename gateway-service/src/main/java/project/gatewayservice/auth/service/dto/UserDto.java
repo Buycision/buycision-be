@@ -1,7 +1,7 @@
 package project.gatewayservice.auth.service.dto;
 
 import lombok.Builder;
-import lombok.Getter;
+import project.gatewayservice.auth.domain.OAuthType;
 
 @Builder
 public record UserDto(
@@ -10,16 +10,7 @@ public record UserDto(
         String phoneNumber,
         String nickname,
         String profileImageUrl,
-        Double reliability
+        Double reliability,
+        OAuthType oAuthType
 ) {
-    public static UserDto of(UserDto user) {
-        return new UserDto(
-                user.id(),
-                user.email(),
-                user.phoneNumber(),
-                user.nickname(),
-                user.profileImageUrl(),
-                user.reliability()
-        );
-    }
 }
