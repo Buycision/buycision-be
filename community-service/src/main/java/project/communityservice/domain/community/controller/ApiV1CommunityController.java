@@ -2,12 +2,13 @@ package project.communityservice.domain.community.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.communityservice.domain.community.dto.request.CommunityCreateRequest;
 import project.communityservice.domain.community.dto.request.CommunityUpdateRequest;
 import project.communityservice.domain.community.dto.response.CommunityResponse;
-import project.communityservice.domain.community.dto.response.CommunityResponses;
 import project.communityservice.domain.community.service.CommunityService;
 
 import java.util.List;
@@ -20,8 +21,11 @@ public class ApiV1CommunityController {
 
     // 커뮤니티 목록
     @GetMapping
-    public ResponseEntity<List<CommunityResponses>> getCommunityList(){
-        return ResponseEntity.ok(communityService.getCommunityList());
+    public ResponseEntity<List<CommunityResponse>> getCommunityList(
+            @RequestParam int page,
+            @RequestParam int size
+    ){
+        return ResponseEntity.ok(communityService.getCommunityList(PageRequest.of(page, size)));
     }
 
     // 커뮤니티 단건 조회
@@ -51,5 +55,25 @@ public class ApiV1CommunityController {
     @DeleteMapping("/{id}")
     public void deleteCommunity(@PathVariable("id") Long id){
         communityService.deleteCommunityById(id);
+    }
+
+    // 본인이 만든 커뮤니티 조회
+    @GetMapping
+    public ResponseEntity<List<CommunityResponse>> getCommunityByHost(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam Long host
+    ){
+        return ResponseEntity.ok(communityService.getCommunityByHost(host, PageRequest.of(page,size)));
+    }
+
+    // 본인이 참여한 커뮤니티 조회
+    @GetMapping
+    public ResponseEntity<List<CommunityResponse>> getCommunityByParticipants(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam Long participants
+    ){
+        return ResponseEntity.ok(communityService.getCommunityById(participants, PageRequest.of(page, size)));
     }
 }

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
@@ -20,6 +22,12 @@ public class Community {
     @Column(name = "board_id")
     private Long id; // 커뮤니티 아이디
 
+    @Column(name = "host_id")
+    private Long host;
+
+    @Column(name = "participant_id")
+    private Long participants;
+
     @Column(name = "board_name")
     private String name; // 커뮤니티 이름
 
@@ -32,6 +40,7 @@ public class Community {
 //    @OneToMany
 //    private Calender calender;
 
+    // 커뮤니티 생성
     public static Community createFrom(String name, String description) {
         return Community.builder()
                 .name(name)
@@ -39,11 +48,20 @@ public class Community {
                 .build();
     }
 
+    // 커뮤니티 수정
     public static Community updateFrom(Long id, String name, String description) {
         return Community.builder()
                 .id(id)
                 .name(name)
                 .description(description)
+                .build();
+    }
+
+    // 커뮤니티 참가
+    public static Community participant(Long id, Long participants) {
+        return Community.builder()
+                .id(id)
+                .participants(participants)
                 .build();
     }
 }
