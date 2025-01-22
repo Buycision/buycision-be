@@ -1,12 +1,12 @@
-package project.communityservice.domain.board.service.impl;
+package project.communityservice.domain.board.post.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.communityservice.domain.board.dto.response.BoardResponse;
-import project.communityservice.domain.board.entity.Board;
-import project.communityservice.domain.board.repository.BoardRepository;
-import project.communityservice.domain.board.service.BoardService;
+import project.communityservice.domain.board.post.dto.response.BoardResponse;
+import project.communityservice.domain.board.post.entity.Board;
+import project.communityservice.domain.board.post.repository.BoardRepository;
+import project.communityservice.domain.board.post.service.BoardService;
 
 import java.util.List;
 

@@ -1,15 +1,14 @@
-package project.communityservice.domain.board.controller;
+package project.communityservice.domain.board.post.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.communityservice.domain.board.dto.request.BoardCreateRequest;
-import project.communityservice.domain.board.dto.request.BoardUpdateRequest;
-import project.communityservice.domain.board.dto.response.BoardResponse;
-import project.communityservice.domain.board.entity.Board;
-import project.communityservice.domain.board.repository.BoardRepository;
-import project.communityservice.domain.board.service.BoardService;
+import project.communityservice.domain.board.post.dto.request.BoardCreateRequest;
+import project.communityservice.domain.board.post.dto.request.BoardUpdateRequest;
+import project.communityservice.domain.board.post.dto.response.BoardResponse;
+import project.communityservice.domain.board.post.repository.BoardRepository;
+import project.communityservice.domain.board.post.service.BoardService;
 
 import java.util.List;
 

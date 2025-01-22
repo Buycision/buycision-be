@@ -14,14 +14,14 @@ name: CI for submodule
 on:
   push:
     branches:
-      - config/*
-      - gateway/*
-      - discovery/*
-      - user/*
-      - chat/*
-      - community/*
-      - map/*
-      - quote/*
+      - config/**
+      - gateway/**
+      - discovery/**
+      - user/**
+      - chat/**
+      - community/**
+      - map/**
+      - quote/**
 
 jobs:
   Integration:
