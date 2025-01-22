@@ -1,10 +1,8 @@
-package project.communityservice.domain.board.repository;
+package project.communityservice.domain.board.post.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import project.communityservice.domain.board.entity.Board;
-
-import java.util.Optional;
+import project.communityservice.domain.board.post.entity.Board;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {

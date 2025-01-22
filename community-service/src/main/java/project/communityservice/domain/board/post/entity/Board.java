@@ -1,4 +1,4 @@
-package project.communityservice.domain.board.entity;
+package project.communityservice.domain.board.post.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

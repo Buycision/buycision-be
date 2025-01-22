@@ -1,6 +1,6 @@
-package project.communityservice.domain.board.service;
+package project.communityservice.domain.board.post.service;
 
-import project.communityservice.domain.board.dto.response.BoardResponse;
+import project.communityservice.domain.board.post.dto.response.BoardResponse;
 
 import java.util.List;
 
