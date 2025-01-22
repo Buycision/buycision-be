@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.userservice.domain.dto.request.UserSignUpRequest;
 import project.userservice.domain.dto.request.UserUpdateRequest;
+import project.userservice.domain.dto.response.UserIdResponse;
 import project.userservice.domain.dto.response.UserInfoResponse;
 import project.userservice.domain.entity.User;
 import project.userservice.domain.repository.UserRepository;
@@ -53,6 +54,18 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserInfoResponse> registerUser(@Valid @RequestBody UserSignUpRequest request) {
         return ResponseEntity.ok(userService.registerUser(request));
+    }
+
+    @Operation(summary = "ID로 유저 조회(Feign)")
+    @GetMapping("/id/{id}")
+    public UserIdResponse getUserId(@PathVariable("id") Long id) {
+        return userService.getId(id);
+    }
+
+    @Operation(summary = "유저 유효성 검증(Feign)")
+    @GetMapping("/validate/{id}")
+    public boolean isUserValid(@PathVariable("id") Long id) {
+        return userService.isUserValid(id);
     }
 
     // test
