@@ -79,6 +79,12 @@ jobs:
           username: ${{ secrets.DOCKER_ID }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
+      # 브랜치 앞에 이름 가져오기
+      - name: Extract service name
+        id: extract-service
+        run: echo "CONTAINER_NAME=$(echo ${GITHUB_REF#refs/heads/} | cut -d'/' -f1)-service" >> $GITHUB_ENV
+
+
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
