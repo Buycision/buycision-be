@@ -21,14 +21,9 @@ public class ChatRoom {
     @Column(name = "room_id")
     private Long roomId;
 
-    // FIXME: 유저 테이블 구현되면 그때 연결
-//    @ManyToOne
-//    @JoinColumn(name = "user1_id", nullable = false)
-//    private User user1;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "user2_id")
-//    private User user2;
+    private Long sender;
+
+    private Long receiver;
 
     @Column(nullable = false)
     private Boolean roomActive;
