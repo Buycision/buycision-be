@@ -50,6 +50,11 @@ public class UserController {
         return userService.getUserInfoByEmail(email);
     }
 
+    @GetMapping("/oauth/{oauthType}/email/{email}")
+    public UserInfoResponse getUserInfoByOAuthTypeAndEmail(@PathVariable String oauthType, @PathVariable String email) {
+        return userService.getUserInfoByOAuthTypeAndEmail(oauthType, email);
+    }
+
     @Operation(summary = "회원가입")
     @PostMapping("/register")
     public ResponseEntity<UserInfoResponse> registerUser(@Valid @RequestBody UserSignUpRequest request) {

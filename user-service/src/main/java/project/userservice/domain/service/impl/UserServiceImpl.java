@@ -8,6 +8,7 @@ import project.userservice.domain.dto.request.UserSignUpRequest;
 import project.userservice.domain.dto.request.UserUpdateRequest;
 import project.userservice.domain.dto.response.UserIdResponse;
 import project.userservice.domain.dto.response.UserInfoResponse;
+import project.userservice.domain.entity.OAuthType;
 import project.userservice.domain.entity.User;
 import project.userservice.domain.exception.UserExceptionType;
 import project.userservice.domain.repository.UserRepository;
@@ -43,6 +44,13 @@ public class UserServiceImpl implements UserService {
         user.updateNickname(request.nickname());
 
         return UserInfoResponse.from(user);
+    }
+
+    @Override
+    public UserInfoResponse getUserInfoByOAuthTypeAndEmail(String oauthType, String email) {
+        return userRepository.findByOauthTypeAndEmail(OAuthType.from(oauthType), email)
+                .map(UserInfoResponse::from)
+                .orElseThrow(() -> new BaseException(UserExceptionType.USER_NOT_FOUND));
     }
 
     @Override

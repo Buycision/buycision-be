@@ -13,6 +13,8 @@ public interface UserService {
 
     UserInfoResponse updateUserNickname(Long userId, UserUpdateRequest request);
 
+    UserInfoResponse getUserInfoByOAuthTypeAndEmail(String oauthType, String email);
+
     UserInfoResponse registerUser(UserSignUpRequest request);
 
     UserIdResponse getId(Long id);
