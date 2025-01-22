@@ -4,5 +4,8 @@ import lombok.Builder;
 
 @Builder
 public record MessageRequest(
-        String content
+        String content,
+        Long roomId,
+        Long userId,
+        Long receiverId
 ) {}
