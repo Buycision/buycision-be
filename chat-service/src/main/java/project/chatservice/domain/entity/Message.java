@@ -6,8 +6,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
+import project.chatservice.domain.dto.request.MessageRequest;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Getter
 @Document(collection = "message")
@@ -33,15 +35,14 @@ public class Message {
         this.createdAt = createdAt;
     }
 
-//    public static Message of(MessageRequest chatMessageDto) {
-//        return Message.builder()
-//                .roomId(chatMessageDto.roomId())
-//                .senderId(chatMessageDto.userId())
-//                .content(chatMessageDto.content())
-//                .createdAt(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
-//                .build();
-//    }
-
+    public static Message of(MessageRequest chatMessageDto) {
+        return Message.builder()
+                .roomId(chatMessageDto.roomId())
+                .senderId(chatMessageDto.userId())
+                .content(chatMessageDto.content())
+                .createdAt(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
+                .build();
+    }
 }
 
 
