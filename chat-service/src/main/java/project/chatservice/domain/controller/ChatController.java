@@ -22,6 +22,6 @@ public class ChatController {
     @MessageMapping("/chat")
     @SendTo("/topic/chat")
     public MessageResponse sendChatMessage(MessageRequest request, SimpMessageHeaderAccessor accessor) {
-        return chatService.processMessage(request, accessor.getSessionId(), (String) accessor.getSessionAttributes().get("nickname"));
+        return chatService.handleMessage(request, accessor.getSessionId(), (String) accessor.getSessionAttributes().get("nickname"));
     }
 }

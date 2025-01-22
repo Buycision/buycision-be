@@ -24,6 +24,7 @@ dependencies {
 
 	// Spring Cloud Bus
 	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
 	// Chat-service
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
