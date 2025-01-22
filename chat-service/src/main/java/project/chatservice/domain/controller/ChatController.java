@@ -6,10 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import project.chatservice.domain.dto.request.MessageRequest;
+import project.chatservice.domain.dto.response.ChatResponseDto;
 import project.chatservice.domain.dto.response.MessageResponse;
 import project.chatservice.domain.service.ChatService;
+import project.globalservice.response.BaseResponse;
 
 @Tag(name = "Chat", description = "채팅 관련 API")
 @RestController
@@ -23,5 +28,15 @@ public class ChatController {
     @SendTo("/topic/chat")
     public MessageResponse sendChatMessage(MessageRequest request, SimpMessageHeaderAccessor accessor) {
         return chatService.processMessage(request, accessor.getSessionId(), (String) accessor.getSessionAttributes().get("nickname"));
+    }
+
+    @GetMapping("/messages")
+    public BaseResponse<ChatResponseDto> getChatMessages(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestParam Long roomId,
+            @RequestParam int size,
+            @RequestParam int page) {
+        ChatResponseDto responseDto = chatService.getMessages(authorizationHeader, roomId, size, page);
+        return new BaseResponse<>(responseDto);
     }
 }
