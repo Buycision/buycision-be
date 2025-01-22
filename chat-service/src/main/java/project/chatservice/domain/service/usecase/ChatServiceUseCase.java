@@ -13,10 +13,12 @@ import project.chatservice.domain.dto.response.MessageResponse;
 import project.chatservice.domain.entity.ChatRoom;
 import project.chatservice.domain.entity.Message;
 import project.chatservice.domain.entity.MessageType;
+import project.chatservice.domain.exception.ChatExceptionType;
 import project.chatservice.domain.repository.ChatRoomRepository;
 import project.chatservice.domain.repository.MessageRepository;
 import project.chatservice.domain.service.ChatService;
 import project.chatservice.domain.service.UserFeignClient;
+import project.globalservice.exception.BaseException;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -157,7 +159,7 @@ public class ChatServiceUseCase implements ChatService {
      */
     private void validateUsers(Long senderId, Long receiverId) {
         if (senderId.equals(receiverId)) {
-            throw new IllegalArgumentException("동일한 사용자에게 메시지를 보낼 수 없습니다.");
+            throw new BaseException(ChatExceptionType.INVALID_CHAT_USER);
         }
         boolean senderValid = userFeignClient.isUserValid(senderId);
         boolean receiverValid = userFeignClient.isUserValid(receiverId);
