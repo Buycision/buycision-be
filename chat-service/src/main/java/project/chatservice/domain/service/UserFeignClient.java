@@ -15,5 +15,4 @@ public interface UserFeignClient {
     @GetMapping("/validate/{id}")
     boolean isUserValid(@PathVariable("id") Long id);
 
-
 }
