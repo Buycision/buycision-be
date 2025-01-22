@@ -3,25 +3,25 @@ name: CI/CD for each main service
 on:
   pull_request:
     branches:
-      - config
-      - gateway
-      - discovery
-      - user
-      - chat
-      - community
-      - map
-      - quote
+      - config-service
+      - gateway-service
+      - discovery-service
+      - user-service
+      - chat-service
+      - community-service
+      - map-service
+      - quote-service
 
   push:
     branches:
-      - config
-      - gateway
-      - discovery
-      - user
-      - chat
-      - community
-      - map
-      - quote
+      - config-service
+      - gateway-service
+      - discovery-service
+      - user-service
+      - chat-service
+      - community-service
+      - map-service
+      - quote-service
 
 jobs:
   Integration:
