@@ -110,13 +110,13 @@ public class CommunityServiceImpl implements CommunityService {
      * @param pageable
      * @return
      */
-    @Override
-    public List<CommunityResponse> getCommunityById(Long participants, Pageable pageable) {
-        Page<Community> communityPage = communityRepository.findAllByParticipants(participants, pageable);
-        List<Community> community = communityPage.getContent();
-        
-        return CommunityResponse.listOf(community);
-    }
+//    @Override
+//    public List<CommunityResponse> getCommunityById(Long participants, Pageable pageable) {
+//        Page<Community> communityPage = communityRepository.findAllByParticipants(participants, pageable);
+//        List<Community> community = communityPage.getContent();
+//
+//        return CommunityResponse.listOf(community);
+//    }
 
 
 }

@@ -26,11 +26,4 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
             Pageable pageable
     );
 
-    // 가입한 커뮤니티 확인
-    @Query("SELECT c FROM Community c WHERE c.participants = :participants")
-    Page<Community> findAllByParticipants(
-            @Param("participants") Long participants,
-            Pageable pageable
-    );
-
 }

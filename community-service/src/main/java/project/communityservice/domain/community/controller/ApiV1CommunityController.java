@@ -2,7 +2,6 @@ package project.communityservice.domain.community.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,22 +57,21 @@ public class ApiV1CommunityController {
     }
 
     // 본인이 만든 커뮤니티 조회
-    @GetMapping
+    @GetMapping("/{host}")
     public ResponseEntity<List<CommunityResponse>> getCommunityByHost(
+            @Valid @PathVariable("host") Long host,
             @RequestParam int page,
-            @RequestParam int size,
-            @RequestParam Long host
+            @RequestParam int size
     ){
         return ResponseEntity.ok(communityService.getCommunityByHost(host, PageRequest.of(page,size)));
     }
 
-    // 본인이 참여한 커뮤니티 조회
-    @GetMapping
-    public ResponseEntity<List<CommunityResponse>> getCommunityByParticipants(
-            @RequestParam int page,
-            @RequestParam int size,
-            @RequestParam Long participants
-    ){
-        return ResponseEntity.ok(communityService.getCommunityById(participants, PageRequest.of(page, size)));
-    }
+//    // 본인이 참여한 커뮤니티 조회
+//    @GetMapping
+//    public ResponseEntity<List<CommunityResponse>> getCommunityByParticipant(
+//            @RequestParam int page,
+//            @RequestParam int size
+//    ){
+//        return ResponseEntity.ok(communityService.getCommunityById(participants, PageRequest.of(page, size)));
+//    }
 }

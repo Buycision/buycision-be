@@ -24,6 +24,6 @@ public interface CommunityService {
     // 본인이 만든 커뮤니티 보이기
     List<CommunityResponse> getCommunityByHost(Long host, Pageable pageable);
 
-    // 본인이 참가한 커뮤니티 보이기
-    List<CommunityResponse> getCommunityById(Long participants, Pageable pageable);
+//    // 본인이 참가한 커뮤니티 보이기
+//    List<CommunityResponse> getCommunityById(Long participants, Pageable pageable);
 }
