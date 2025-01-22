@@ -1,7 +1,7 @@
 package project.chatservice.domain.dto.response;
 
 import lombok.Builder;
-import project.chatservice.domain.dto.request.MessageRequestDto;
+import project.chatservice.domain.dto.request.MessageRequest;
 
 import java.util.List;
 
@@ -9,5 +9,5 @@ import java.util.List;
 public record ChatResponseDto(
         ChatUserResponseDto user,
         ChatPageResponseDto pageableDto,
-        List<MessageRequestDto> chatList
+        List<MessageRequest> chatList
 ) {}
