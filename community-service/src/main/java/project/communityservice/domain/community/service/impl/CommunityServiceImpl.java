@@ -4,13 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.communityservice.domain.community.dto.response.CommunityResponse;
-import project.communityservice.domain.community.dto.response.CommunityResponses;
 import project.communityservice.domain.community.entity.Community;
 import project.communityservice.domain.community.repository.CommunityRepository;
 import project.communityservice.domain.community.service.CommunityService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,12 +17,10 @@ public class CommunityServiceImpl implements CommunityService {
     private final CommunityRepository communityRepository;
 
     @Override
-    public List<CommunityResponses> getCommunityList() {
-        List<Community> communities = communityRepository.findAll();
+    public List<CommunityResponse> getCommunityList() {
+        List<Community> community = communityRepository.findAll();
 
-        return communities.stream()
-                .map(CommunityResponses::listOf)
-                .collect(Collectors.toList());
+        return CommunityResponse.listOf(community);
     }
 
     @Override

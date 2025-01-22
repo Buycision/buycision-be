@@ -1,13 +1,12 @@
 package project.communityservice.domain.community.service;
 
 import project.communityservice.domain.community.dto.response.CommunityResponse;
-import project.communityservice.domain.community.dto.response.CommunityResponses;
 
 import java.util.List;
 
 public interface CommunityService {
     // 목록 조회
-    List<CommunityResponses> getCommunityList();
+    List<CommunityResponse> getCommunityList();
 
     // 단건 조회
     CommunityResponse getCommunity(Long id);

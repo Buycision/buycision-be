@@ -14,9 +14,14 @@ import javax.xml.stream.events.Comment;
 public class boardCommentServiceImpl implements boardCommentService {
     private final boardCommentRepository commentRepository;
 
+//    @Override
+//    public CommentResponse createComment(CommentRequest commentRequest) {
+//        return "";
+//    }
+
     @Override
     public CommentResponse createComment(CommentRequest commentRequest) {
-        return "";
+        return null;
     }
 
     @Override
