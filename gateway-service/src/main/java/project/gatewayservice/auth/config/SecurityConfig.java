@@ -46,6 +46,7 @@ public class SecurityConfig {
                         .pathMatchers("/v3/api-docs/**", "/user/v3/api-docs", "/chat/v3/api-docs", "/community/v3/api-docs").permitAll()
                         .pathMatchers("/user/email/**", "/user/register").permitAll() // for Auth
                         .pathMatchers("/chat/**").permitAll()
+                        .pathMatchers("/h2-console/**").permitAll()
                         .anyExchange().permitAll()
                 )
                 .logout(logout -> logout.logoutUrl("/logout"))
