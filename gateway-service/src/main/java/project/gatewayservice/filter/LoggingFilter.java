@@ -32,7 +32,7 @@ public class LoggingFilter implements GlobalFilter, Ordered {
         HttpMethod reqMethod = exchange.getRequest().getMethod();
         String reqPath = exchange.getRequest().getPath().toString();
 
-        log.info("[ID: {}] [{}]: {} 요청이 들어왔어요.", reqId, reqMethod, reqPath);
+        log.info("[ID: {}] [{}]: '{}' 요청이 들어왔어요.", reqId, reqMethod, reqPath);
 
         if (AUTH_WHITELIST.stream().anyMatch(reqPath::startsWith)) {
             return chain.filter(exchange);
@@ -52,7 +52,7 @@ public class LoggingFilter implements GlobalFilter, Ordered {
                             long duration = System.currentTimeMillis() - startTime;
                             HttpStatusCode statusCode = exchange.getResponse().getStatusCode();
 
-                            log.info("[ID: {}] [{}]: {} 요청이 완료됐어요. 응답 시간: [{}ms], 상태 코드: {}",
+                            log.info("[ID: {}] [{}]: '{}' 요청이 완료됐어요. 응답 시간: [{}ms], 상태 코드: {}",
                                     reqId, reqMethod, reqPath, duration, statusCode);
 
                             if (statusCode != null && statusCode.is2xxSuccessful()) {
