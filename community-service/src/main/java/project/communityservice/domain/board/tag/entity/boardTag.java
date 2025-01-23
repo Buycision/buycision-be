@@ -1,10 +1,7 @@
 package project.communityservice.domain.board.tag.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import project.communityservice.domain.board.post.entity.Board;
 import project.communityservice.global.baseEntity.BaseEntity;
@@ -21,9 +18,17 @@ public class boardTag extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, name = "tags")
-    private String tags;
+    private String tags; // 태그 이름
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Board board;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "board_id")
+//    @Builder.Default
+//    private Board board;
+
+    public boardTag from (String tags) {
+        return boardTag.builder()
+                .tags(tags)
+                .build();
+    }
 
 }
