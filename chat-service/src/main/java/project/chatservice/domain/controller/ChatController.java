@@ -30,13 +30,4 @@ public class ChatController {
         return chatService.processMessage(request, accessor.getSessionId(), (String) accessor.getSessionAttributes().get("nickname"));
     }
 
-    @GetMapping("/messages")
-    public BaseResponse<ChatResponseDto> getChatMessages(
-            @RequestHeader("Authorization") String authorizationHeader,
-            @RequestParam Long roomId,
-            @RequestParam int size,
-            @RequestParam int page) {
-        ChatResponseDto responseDto = chatService.getMessages(authorizationHeader, roomId, size, page);
-        return new BaseResponse<>(responseDto);
-    }
 }
