@@ -9,9 +9,23 @@ import project.globalservice.exception.HttpStatus;
 @AllArgsConstructor
 public enum ChatExceptionType implements ExceptionType {
 
-    CHAT_NOT_FOUND(HttpStatus.NOT_FOUND, "chat-001", "채팅방을 찾을 수 없습니다."),
+    /**
+     * 채팅방
+     */
+    CHAT_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "chat-001", "채팅방을 찾을 수 없습니다."),
     CHAT_USER_NOT_FOUND(HttpStatus.NOT_FOUND, "chat-002", "채팅방에 참여한 사용자를 찾을 수 없습니다."),
-    INVALID_CHAT_USER(HttpStatus.BAD_REQUEST, "chat-003", "유효한 사용자가 아닙니다."),
+    ALREADY_DEACTIVATION_ROOM(HttpStatus.NOT_FOUND, "chat-003", "이미 비활성화된 채팅방입니다"),
+
+    /**
+     * 메세지
+     */
+
+
+    /**
+     * 사용자
+     */
+    INVALID_CHAT_USER(HttpStatus.BAD_REQUEST, "chat-004", "유효한 사용자가 아닙니다."),
+    INVALID_USER_INFO(HttpStatus.NOT_FOUND, "chat-005", "잘못된 사용자 정보입니다.")
     ;
 
     private final HttpStatus httpStatus;
