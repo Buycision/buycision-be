@@ -8,6 +8,7 @@ import project.communityservice.global.baseEntity.BaseEntity;
 
 import static lombok.AccessLevel.PROTECTED;
 
+
 @Getter
 @AllArgsConstructor(access = PROTECTED)
 @NoArgsConstructor(access = PROTECTED)
@@ -16,22 +17,23 @@ import static lombok.AccessLevel.PROTECTED;
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "board_comment")
 @SuperBuilder
-public class boardComment extends BaseEntity {
+public class Comment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // 해당 댓글
 
     @Column(name = "body")
-    private String body;
+    private String body; // 댓글 내용
 
-    @ManyToOne
-    @JoinColumn(name = "board_id")
-    private Board board;
+//    @ManyToOne
+//    @JoinColumn(name = "board_id")
+//    @Builder.Default
+//    private Board board; // 해당 게시판 조회
 
-    public static boardComment from(String body, Board board) {
-        return boardComment.builder()
-                .board(board)
+    // 댓글 빌더
+    public static Comment from(String body) {
+        return Comment.builder()
                 .body(body)
                 .build();
     }
