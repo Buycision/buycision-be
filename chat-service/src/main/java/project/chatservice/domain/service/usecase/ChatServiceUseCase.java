@@ -13,10 +13,12 @@ import project.chatservice.domain.dto.response.MessageResponse;
 import project.chatservice.domain.entity.ChatRoom;
 import project.chatservice.domain.entity.Message;
 import project.chatservice.domain.entity.MessageType;
+import project.chatservice.domain.exception.ChatExceptionType;
 import project.chatservice.domain.repository.ChatRoomRepository;
 import project.chatservice.domain.repository.MessageRepository;
 import project.chatservice.domain.service.ChatService;
 import project.chatservice.domain.service.UserFeignClient;
+import project.globalservice.exception.BaseException;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -140,10 +142,10 @@ public class ChatServiceUseCase implements ChatService {
      */
     private ChatRoom validateChatRoom(Long roomId) {
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 채팅방입니다. roomId=" + roomId));
+                .orElseThrow(() -> new BaseException(ChatExceptionType.CHAT_ROOM_NOT_FOUND));
 
         if (!chatRoom.getRoomActive()) {
-            throw new IllegalStateException("이미 비활성화된 채팅방입니다. roomId=" + roomId);
+            throw new BaseException(ChatExceptionType.ALREADY_DEACTIVATION_ROOM);
         }
         return chatRoom;
     }
@@ -157,14 +159,13 @@ public class ChatServiceUseCase implements ChatService {
      */
     private void validateUsers(Long senderId, Long receiverId) {
         if (senderId.equals(receiverId)) {
-            throw new IllegalArgumentException("동일한 사용자에게 메시지를 보낼 수 없습니다.");
+            throw new BaseException(ChatExceptionType.INVALID_CHAT_USER);
         }
         boolean senderValid = userFeignClient.isUserValid(senderId);
         boolean receiverValid = userFeignClient.isUserValid(receiverId);
 
         if (!senderValid || !receiverValid) {
-            throw new IllegalArgumentException("잘못된 사용자 정보입니다. senderId="
-                    + senderId + ", receiverId=" + receiverId);
+            throw new BaseException(ChatExceptionType.INVALID_USER_INFO);
         }
     }
 
