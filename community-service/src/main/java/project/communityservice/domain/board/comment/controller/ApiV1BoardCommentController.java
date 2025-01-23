@@ -1,5 +1,6 @@
 package project.communityservice.domain.board.comment.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,38 +10,31 @@ import project.communityservice.domain.board.comment.service.impl.CommentService
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/board/comment")
+@RequestMapping("/api/v1/board")
 public class ApiV1BoardCommentController {
     private final CommentServiceImpl commentServiceImpl;
-
-//    /**
-//     * 게시물 댓글 조회
-//     */
-//    @GetMapping
-//    public ResponseEntity<CommentResponse> allComment(){
-//        return ResponseEntity.ok(null);
-//    }
-
 
     /**
      * 댓글 생성
      */
-    @PostMapping
+    @PostMapping("/{boardId}")
     public ResponseEntity<CommentResponse> createComment(
-            @RequestBody CommentRequest commentRequest
+            @PathVariable("boardId") Long boardId,
+            @Valid @RequestBody CommentRequest commentRequest
     ){
-        return ResponseEntity.ok(commentServiceImpl.createComment(commentRequest.body()));
+        return ResponseEntity.ok(commentServiceImpl.createComment(boardId, commentRequest.body()));
     }
 
     /**
      * 댓글 삭제
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{boardId}/{commentId}")
     public void deleteComment(
-            @PathVariable("id") Long id
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("commentId") Long commentId
     ){
-      commentServiceImpl.deleteComment(id);
+      commentServiceImpl.deleteComment(boardId, commentId);
     }
 
-
+    // 댓글 가져오는 컨트롤러는 게시글에 만드는게 더 적합하다고 생각중
 }

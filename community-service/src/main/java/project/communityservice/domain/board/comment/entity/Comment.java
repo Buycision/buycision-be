@@ -16,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "board_comment")
-@SuperBuilder
+@Builder
 public class Comment extends BaseEntity {
 
     @Id
@@ -26,14 +26,14 @@ public class Comment extends BaseEntity {
     @Column(name = "body")
     private String body; // 댓글 내용
 
-//    @ManyToOne
-//    @JoinColumn(name = "board_id")
-//    @Builder.Default
-//    private Board board; // 해당 게시판 조회
+    @ManyToOne
+    @JoinColumn(name = "board_id")
+    private Board board; // 해당 게시판 조회
 
     // 댓글 빌더
-    public static Comment from(String body) {
+    public static Comment from(Board board, String body) {
         return Comment.builder()
+                .board(board)
                 .body(body)
                 .build();
     }
