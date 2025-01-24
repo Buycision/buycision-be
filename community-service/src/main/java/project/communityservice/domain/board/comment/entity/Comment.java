@@ -26,7 +26,7 @@ public class Comment extends BaseEntity {
     @Column(name = "body")
     private String body; // 댓글 내용
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board; // 해당 게시판 조회
 

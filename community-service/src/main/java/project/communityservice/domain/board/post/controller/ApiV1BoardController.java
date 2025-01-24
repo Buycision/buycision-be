@@ -2,12 +2,14 @@ package project.communityservice.domain.board.post.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.communityservice.domain.board.post.dto.request.BoardCreateRequest;
 import project.communityservice.domain.board.post.dto.request.BoardUpdateRequest;
+import project.communityservice.domain.board.post.dto.request.CommentRequest;
 import project.communityservice.domain.board.post.dto.response.BoardResponse;
-import project.communityservice.domain.board.post.repository.BoardRepository;
+import project.communityservice.domain.board.post.dto.response.CommentResponse;
 import project.communityservice.domain.board.post.service.BoardService;
 
 import java.util.List;
@@ -33,7 +35,7 @@ public class ApiV1BoardController {
     // 게시물 등록
     @PostMapping
     public ResponseEntity<BoardResponse> createBoard(@Valid @RequestBody BoardCreateRequest boardCreateRequest){
-        return ResponseEntity.ok(boardService.createBoard(boardCreateRequest.title(), boardCreateRequest.content()));
+        return ResponseEntity.ok(boardService.createBoard(boardCreateRequest.title(), boardCreateRequest.content(), boardCreateRequest.tagName()));
     }
 
     // 게시물 수정
@@ -49,5 +51,27 @@ public class ApiV1BoardController {
     @DeleteMapping("/{id}")
     public void deleteBoard(@PathVariable("id") Long id){
         boardService.deleteBoard(id);
+    }
+
+    // 댓글 달기
+    @PostMapping("/{id}")
+    public ResponseEntity<CommentResponse> createComment(@Valid @PathVariable("id") Long id,
+                                                         @RequestBody CommentRequest commentRequest) {
+        return ResponseEntity.ok(boardService.createComment(id, commentRequest.body()));
+    }
+
+    // 댓글 삭제
+    @DeleteMapping("/{id}/{commentId}")
+    public void deleteComment(@Valid @PathVariable("id") Long id,
+                              @PathVariable("commentId") Long commentId){
+        boardService.deleteComment(id, commentId);
+    }
+
+    // 태그 검색
+    @GetMapping("/{tagName}")
+    public ResponseEntity<List<BoardResponse>> getTagToBoard(@Valid @PathVariable("tagName") String tagName,
+                                                           @RequestParam int page,
+                                                           @RequestParam int size){
+        return ResponseEntity.ok(boardService.tagSerach(tagName, PageRequest.of(page, size)));
     }
 }

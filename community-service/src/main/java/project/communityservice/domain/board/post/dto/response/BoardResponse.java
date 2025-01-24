@@ -6,15 +6,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public record BoardResponse (
-        Long id,
+        Long boardId,
         String title,
-        String content
+        String content,
+        TagResponse tagResponse,
+        List<CommentResponse> commentResponse
+
 ){
     public static BoardResponse of(Board board) {
         return new BoardResponse(
                 board.getId(),
                 board.getTitle(),
-                board.getContent()
+                board.getContent(),
+                TagResponse.of(board.getBoardTag()),
+                CommentResponse.listOf((board.getComments()))
         );
     }
 

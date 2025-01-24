@@ -1,9 +1,6 @@
 package project.communityservice.domain.board.post.dto.request;
 
-public record BoardCreateRequest(
-        String title,
-        String content,
+public record TagRequest(
         String tagName
-){
-
+) {
 }

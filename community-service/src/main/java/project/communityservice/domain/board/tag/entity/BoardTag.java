@@ -23,12 +23,12 @@ public class BoardTag extends BaseEntity {
     @Column(nullable = false, name = "tag")
     private String tag; // 태그 이름
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
+    @OneToMany(mappedBy = "boardTag", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Builder.Default
+    @ToString.Exclude
     private List<Board> board = new ArrayList<>();
 
-    public BoardTag from (String tag) {
+    public static BoardTag from (String tag) {
         return BoardTag.builder()
                 .tag(tag)
                 .build();
