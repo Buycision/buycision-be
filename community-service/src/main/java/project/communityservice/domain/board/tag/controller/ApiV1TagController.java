@@ -14,7 +14,7 @@ import project.communityservice.domain.board.tag.service.BoardTagService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/board")
+@RequestMapping("/api/v1/board/tag")
 @RequiredArgsConstructor
 public class ApiV1TagController {
     private final BoardTagService boardTagService;

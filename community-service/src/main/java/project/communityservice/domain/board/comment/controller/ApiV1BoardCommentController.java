@@ -10,7 +10,7 @@ import project.communityservice.domain.board.comment.service.impl.CommentService
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/board")
+@RequestMapping("/api/v1/board/comment")
 public class ApiV1BoardCommentController {
     private final CommentServiceImpl commentServiceImpl;
 
