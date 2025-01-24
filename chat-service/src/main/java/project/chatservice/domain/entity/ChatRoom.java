@@ -1,48 +1,43 @@
 package project.chatservice.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-
-@Table(name = "chat_room")
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class ChatRoom {
-
-    // TODO: 기본적으로 1:1 채팅을 목적으로 함 추후 User쪽이 다 끝나면 그때 마무리
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "room_id")
-    private Long roomId;
+    private Long id;
 
-    private Long sender;
-
-    private Long receiver;
+    private String name;
 
     @Column(nullable = false)
-    private Boolean roomActive;
+    private Boolean isActivated;
 
+    @CreatedDate
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
     // 채팅방 비활성화
     public void roomDeActivate() {
-        this.roomActive = false;
+        this.isActivated = false;
     }
 
-    @Builder
-    public ChatRoom(Long sender, Long receiver) {
-        this.sender = sender;
-        this.receiver = receiver;
-        this.roomActive = true;
-        this.createdAt = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+    public static ChatRoom from(String name) {
+        return ChatRoom.builder()
+                .name(name)
+                .isActivated(true)
+                .createdAt(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
+                .build();
     }
+
 }

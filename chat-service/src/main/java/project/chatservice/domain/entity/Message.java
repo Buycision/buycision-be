@@ -1,10 +1,7 @@
 package project.chatservice.domain.entity;
 
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import project.chatservice.domain.dto.request.MessageRequest;
 
@@ -14,6 +11,8 @@ import java.time.ZoneId;
 @Getter
 @Document(collection = "message")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Message {
 
     @Id
@@ -26,14 +25,6 @@ public class Message {
     private String content;
 
     private LocalDateTime createdAt;
-
-    @Builder
-    public Message(Long roomId, Long senderId, String content, LocalDateTime createdAt) {
-        this.roomId = roomId;
-        this.senderId = senderId;
-        this.content = content;
-        this.createdAt = createdAt;
-    }
 
     public static Message of(MessageRequest chatMessageDto) {
         return Message.builder()

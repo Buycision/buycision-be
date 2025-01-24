@@ -40,9 +40,6 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
-	//Spring webClient
-//	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-
 	// Swagger3
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.7.0'
 
