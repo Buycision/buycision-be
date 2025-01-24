@@ -10,8 +10,6 @@ import project.communityservice.domain.board.comment.repository.CommentRepositor
 import project.communityservice.domain.board.comment.service.CommentService;
 import project.communityservice.domain.board.post.entity.Board;
 import project.communityservice.domain.board.post.repository.BoardRepository;
-import project.communityservice.domain.community.dto.response.CommunityResponse;
-import project.communityservice.domain.community.entity.Community;
 
 import java.util.List;
 
@@ -44,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentResponse> getComments(Long boardId, Pageable pageable) {
-        Page<Comment> comments = commentRepository.findAllByBoardId(boardId);
+        Page<Comment> comments = commentRepository.findAllByBoardId(boardId, pageable);
         List<Comment> commentList = comments.getContent();
 
         return CommentResponse.listOf(commentList);

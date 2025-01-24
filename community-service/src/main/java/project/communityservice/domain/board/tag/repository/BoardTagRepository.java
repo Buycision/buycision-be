@@ -11,6 +11,6 @@ import project.communityservice.domain.board.tag.entity.BoardTag;
 @Repository
 public interface BoardTagRepository extends JpaRepository<BoardTag, Long> {
     // 태그 찾기
-    @Query("SELECT t FROM BoardTag t JOIN t.board b WHERE t.tag = :tagName")
-    Page<BoardTag> findAllByTag(@Param("tagName") String tagName, Pageable pageable);
+    @Query("SELECT t FROM BoardTag t JOIN t.board b WHERE t.tag = :tag")
+    Page<BoardTag> findAllByTag(@Param("tag") String tag, Pageable pageable);
 }

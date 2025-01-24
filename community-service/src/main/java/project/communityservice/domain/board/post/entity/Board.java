@@ -34,6 +34,8 @@ public class Board extends BaseEntity {
     private String content; // 게시글 내용
 
     @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @Builder.Default
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne

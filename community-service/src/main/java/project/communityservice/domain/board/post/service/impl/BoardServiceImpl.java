@@ -11,7 +11,6 @@ import project.communityservice.domain.board.post.service.BoardService;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
