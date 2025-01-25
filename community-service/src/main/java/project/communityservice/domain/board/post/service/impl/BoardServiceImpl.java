@@ -73,6 +73,7 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.delete(board);
     }
 
+    // 태그로 게시글 검색
     @Override
     public List<BoardResponse> tagSearch(Long tagId, Pageable pageable) {
         Page<Board> boards = boardRepository.findAllByTag(tagId, pageable);

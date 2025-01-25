@@ -55,6 +55,20 @@ public class ApiV1BoardController {
         boardService.deleteBoard(id);
     }
 
+    // 태그를 만드는 그런 느낌
+    @PostMapping("/tag")
+    public ResponseEntity<TagResponse> createTag(@Valid @RequestBody TagCreateRequest tagCreateRequest){
+        return ResponseEntity.ok(boardService.createTag(tagCreateRequest.tagName()));
+    }
+
+    // 태그로 게시글 검색
+    @GetMapping("/{tagId}/tag")
+    public ResponseEntity<List<BoardResponse>> getTagToBoard(@Valid @PathVariable("tagId") Long tagId,
+                                                             @RequestParam("page") int page,
+                                                             @RequestParam("size") int size){
+        return ResponseEntity.ok(boardService.tagSearch(tagId, PageRequest.of(page, size)));
+    }
+
     // 댓글 달기
     @PostMapping("/{id}")
     public ResponseEntity<CommentResponse> createComment(@Valid @PathVariable("id") Long id,
@@ -67,19 +81,5 @@ public class ApiV1BoardController {
     public void deleteComment(@Valid @PathVariable("id") Long id,
                               @PathVariable("commentId") Long commentId){
         boardService.deleteComment(id, commentId);
-    }
-
-    // 태그를 만드는 그런 느낌
-    @PostMapping("/tag")
-    public ResponseEntity<TagResponse> createTag(@Valid @RequestBody TagCreateRequest tagCreateRequest){
-        return ResponseEntity.ok(boardService.createTag(tagCreateRequest.tagName()));
-    }
-
-    // 태그로 게시글 검색
-    @GetMapping("/{tagId}/tag")
-    public ResponseEntity<List<BoardResponse>> getTagToBoard(@Valid @PathVariable("tagId") Long tagId,
-                                                           @RequestParam int page,
-                                                           @RequestParam int size){
-        return ResponseEntity.ok(boardService.tagSearch(tagId, PageRequest.of(page, size)));
     }
 }
