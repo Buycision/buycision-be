@@ -6,7 +6,7 @@ import project.communityservice.domain.board.tag.entity.BoardTag;
 
 @Repository
 public interface BoardTagRepository extends JpaRepository<BoardTag, Long> {
-    default BoardTag getByIdOrElseThrow(Long id){
+    default BoardTag getByIdOrElseThrow(Long id) {
         return findById(id).orElseThrow(null);
     }
 }

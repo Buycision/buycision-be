@@ -4,6 +4,6 @@ public record BoardCreateRequest(
         String title,
         String content,
         Long tagId
-){
+) {
 
 }

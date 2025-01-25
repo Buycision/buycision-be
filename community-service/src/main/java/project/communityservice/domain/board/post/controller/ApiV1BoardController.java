@@ -24,40 +24,40 @@ public class ApiV1BoardController {
 
     // 게시글 목록
     @GetMapping
-    public ResponseEntity<List<BoardResponse>> boardList(){
+    public ResponseEntity<List<BoardResponse>> boardList() {
         return ResponseEntity.ok(boardService.getBoards());
     }
 
     // 게시물 단건 조회
     @GetMapping("/{id}")
-    public ResponseEntity<BoardResponse> board(@PathVariable("id") Long id){
+    public ResponseEntity<BoardResponse> board(@PathVariable("id") Long id) {
         return ResponseEntity.ok(boardService.getBoard(id));
     }
 
     // 게시물 등록
     @PostMapping
-    public ResponseEntity<BoardResponse> createBoard(@Valid @RequestBody BoardCreateRequest boardCreateRequest){
+    public ResponseEntity<BoardResponse> createBoard(@Valid @RequestBody BoardCreateRequest boardCreateRequest) {
         return ResponseEntity.ok(boardService.createBoard(boardCreateRequest.title(), boardCreateRequest.content(), boardCreateRequest.tagId()));
     }
 
     // 게시물 수정
     // Put 전체 , Patch 일정 부분
     @PatchMapping("/{id}")
-    public ResponseEntity<BoardResponse> updateBoard( @Valid @PathVariable("id") Long id,
-                                                      @RequestBody BoardUpdateRequest boardUpdateRequest){
+    public ResponseEntity<BoardResponse> updateBoard(@Valid @PathVariable("id") Long id,
+                                                     @RequestBody BoardUpdateRequest boardUpdateRequest) {
 
         return ResponseEntity.ok(boardService.updateBoard(id, boardUpdateRequest.title(), boardUpdateRequest.content()));
     }
 
     // 게시물 삭제
     @DeleteMapping("/{id}")
-    public void deleteBoard(@PathVariable("id") Long id){
+    public void deleteBoard(@PathVariable("id") Long id) {
         boardService.deleteBoard(id);
     }
 
     // 태그를 만드는 그런 느낌
     @PostMapping("/tag")
-    public ResponseEntity<TagResponse> createTag(@Valid @RequestBody TagCreateRequest tagCreateRequest){
+    public ResponseEntity<TagResponse> createTag(@Valid @RequestBody TagCreateRequest tagCreateRequest) {
         return ResponseEntity.ok(boardService.createTag(tagCreateRequest.tagName()));
     }
 
@@ -65,7 +65,7 @@ public class ApiV1BoardController {
     @GetMapping("/{tagId}/tag")
     public ResponseEntity<List<BoardResponse>> getTagToBoard(@Valid @PathVariable("tagId") Long tagId,
                                                              @RequestParam("page") int page,
-                                                             @RequestParam("size") int size){
+                                                             @RequestParam("size") int size) {
         return ResponseEntity.ok(boardService.tagSearch(tagId, PageRequest.of(page, size)));
     }
 
@@ -79,7 +79,7 @@ public class ApiV1BoardController {
     // 댓글 삭제
     @DeleteMapping("/{id}/{commentId}")
     public void deleteComment(@Valid @PathVariable("id") Long id,
-                              @PathVariable("commentId") Long commentId){
+                              @PathVariable("commentId") Long commentId) {
         boardService.deleteComment(id, commentId);
     }
 }

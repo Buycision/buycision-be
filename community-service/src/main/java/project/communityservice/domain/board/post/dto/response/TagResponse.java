@@ -1,7 +1,7 @@
 package project.communityservice.domain.board.post.dto.response;
 
-import project.communityservice.domain.board.post.entity.Board;
 import project.communityservice.domain.board.tag.entity.BoardTag;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +17,7 @@ public record TagResponse(
     }
 
     public static List<TagResponse> listOf(List<BoardTag> tags) {
-        return  tags.stream()
+        return tags.stream()
                 .map(TagResponse::of)
                 .collect(Collectors.toList());
     }

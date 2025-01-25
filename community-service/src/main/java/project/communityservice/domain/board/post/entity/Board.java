@@ -3,9 +3,9 @@ package project.communityservice.domain.board.post.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import project.communityservice.domain.board.comment.entity.Comment;
 import project.communityservice.domain.board.tag.entity.BoardTag;
 import project.communityservice.global.baseEntity.BaseEntity;
-import project.communityservice.domain.board.comment.entity.Comment;
 
 import java.util.ArrayList;
 import java.util.List;

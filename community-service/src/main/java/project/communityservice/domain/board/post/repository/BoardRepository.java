@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import project.communityservice.domain.board.post.entity.Board;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
-    default Board getByIdOrElseThrow(Long id){
+    default Board getByIdOrElseThrow(Long id) {
         return findById(id).orElseThrow(null);
     }
 

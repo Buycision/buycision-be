@@ -17,7 +17,6 @@ import project.communityservice.domain.board.post.service.BoardService;
 import project.communityservice.domain.board.tag.entity.BoardTag;
 import project.communityservice.domain.board.tag.repository.BoardTagRepository;
 
-import javax.swing.text.html.HTML;
 import java.util.List;
 
 @Service
@@ -104,7 +103,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public TagResponse createTag(String tagName){
+    public TagResponse createTag(String tagName) {
         BoardTag boardTag = BoardTag.createFrom(tagName);
 
         boardTagRepository.save(boardTag);

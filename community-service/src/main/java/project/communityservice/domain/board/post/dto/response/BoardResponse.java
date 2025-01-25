@@ -5,14 +5,14 @@ import project.communityservice.domain.board.post.entity.Board;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record BoardResponse (
+public record BoardResponse(
         Long id,
         String title,
         String content,
         TagResponse tagResponse,
         List<CommentResponse> commentResponse
 
-){
+) {
     public static BoardResponse of(Board board) {
         return new BoardResponse(
                 board.getId(),

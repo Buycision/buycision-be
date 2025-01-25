@@ -10,7 +10,7 @@ import project.communityservice.domain.board.comment.entity.Comment;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    default Comment getByIdOrThrow(Long id){
+    default Comment getByIdOrThrow(Long id) {
         return findById(id).orElseThrow(null);
     }
 
