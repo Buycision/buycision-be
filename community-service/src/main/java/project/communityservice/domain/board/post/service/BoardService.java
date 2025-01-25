@@ -15,7 +15,7 @@ public interface BoardService {
     BoardResponse getBoard(Long id);
 
     // 게시글 등록
-    BoardResponse createBoard(String title, String content, String tagName);
+    BoardResponse createBoard(String title, String content, Long tagId);
 
     // 게시글 수정
     BoardResponse updateBoard(Long id, String title, String content);
@@ -24,7 +24,7 @@ public interface BoardService {
     void deleteBoard(Long id);
 
     // 태그 검색
-    List<BoardResponse> tagSerach(String tagName, Pageable pageable);
+    List<BoardResponse> tagSearch(Long tagId, Pageable pageable);
 
     // 댓글 생성
     CommentResponse createComment(Long boardId, String body);

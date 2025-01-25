@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import project.communityservice.domain.board.post.dto.request.BoardCreateRequest;
 import project.communityservice.domain.board.post.dto.request.BoardUpdateRequest;
 import project.communityservice.domain.board.post.dto.request.CommentRequest;
+import project.communityservice.domain.board.post.dto.request.TagCreateRequest;
 import project.communityservice.domain.board.post.dto.response.BoardResponse;
 import project.communityservice.domain.board.post.dto.response.CommentResponse;
+import project.communityservice.domain.board.post.dto.response.TagResponse;
 import project.communityservice.domain.board.post.service.BoardService;
 
 import java.util.List;
@@ -35,7 +37,7 @@ public class ApiV1BoardController {
     // 게시물 등록
     @PostMapping
     public ResponseEntity<BoardResponse> createBoard(@Valid @RequestBody BoardCreateRequest boardCreateRequest){
-        return ResponseEntity.ok(boardService.createBoard(boardCreateRequest.title(), boardCreateRequest.content(), boardCreateRequest.tagName()));
+        return ResponseEntity.ok(boardService.createBoard(boardCreateRequest.title(), boardCreateRequest.content(), boardCreateRequest.tagId()));
     }
 
     // 게시물 수정
@@ -67,11 +69,17 @@ public class ApiV1BoardController {
         boardService.deleteComment(id, commentId);
     }
 
-    // 태그 검색
-    @GetMapping("/{tagName}")
-    public ResponseEntity<List<BoardResponse>> getTagToBoard(@Valid @PathVariable("tagName") String tagName,
+    // 태그를 만드는 그런 느낌
+    @PostMapping("/tag")
+    public ResponseEntity<TagResponse> createTag(@Valid @RequestBody TagCreateRequest tagCreateRequest){
+        return ResponseEntity.ok(boardService.createTag(tagCreateRequest.tagName()));
+    }
+
+    // 태그로 게시글 검색
+    @GetMapping("/{tagId}/tag")
+    public ResponseEntity<List<BoardResponse>> getTagToBoard(@Valid @PathVariable("tagId") Long tagId,
                                                            @RequestParam int page,
                                                            @RequestParam int size){
-        return ResponseEntity.ok(boardService.tagSerach(tagName, PageRequest.of(page, size)));
+        return ResponseEntity.ok(boardService.tagSearch(tagId, PageRequest.of(page, size)));
     }
 }

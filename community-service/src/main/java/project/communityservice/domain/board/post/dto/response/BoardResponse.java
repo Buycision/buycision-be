@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public record BoardResponse (
-        Long boardId,
+        Long id,
         String title,
         String content,
         TagResponse tagResponse,

@@ -42,19 +42,20 @@ public class Board extends BaseEntity {
     @JoinColumn(name = "board_tag_id")
     private BoardTag boardTag; // 게시글 태그
 
-    public static Board createFrom(String title, String content, String tagName) {
+    public static Board createFrom(String title, String content, Long tagId) {
         return Board.builder()
                 .title(title)
                 .content(content)
-                .boardTag(BoardTag.from(tagName))
+                .boardTag(BoardTag.searchFrom(tagId))
                 .build();
     }
 
-    public static Board updateFrom(Long id, String title, String content) {
+    public static Board updateFrom(Long id, String title, String content, Long tagId) {
         return Board.builder()
                 .id(id)
                 .title(title)
                 .content(content)
+                .boardTag(BoardTag.searchFrom(tagId))
                 .build();
     }
 }

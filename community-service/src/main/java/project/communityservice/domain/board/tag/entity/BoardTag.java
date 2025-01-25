@@ -28,7 +28,13 @@ public class BoardTag extends BaseEntity {
     @ToString.Exclude
     private List<Board> board = new ArrayList<>();
 
-    public static BoardTag from (String tag) {
+    public static BoardTag searchFrom (Long id) {
+        return BoardTag.builder()
+                .id(id)
+                .build();
+    }
+
+    public static BoardTag createFrom (String tag) {
         return BoardTag.builder()
                 .tag(tag)
                 .build();

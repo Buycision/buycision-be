@@ -18,6 +18,9 @@ public record CommentResponse(
     }
 
     public static List<CommentResponse> listOf(List<Comment> comments) {
+        if (comments == null || comments.isEmpty()) {
+            return List.of(); // 빈 리스트 반환
+        }
         return comments.stream()
                 .map(CommentResponse::of)
                 .collect(Collectors.toList());

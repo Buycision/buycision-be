@@ -1,6 +1,6 @@
 package project.communityservice.domain.board.post.dto.request;
 
-public record TagRequest(
+public record TagCreateRequest(
         String tagName
 ) {
 }
