@@ -21,13 +21,14 @@ public class ApiV1CommunityController {
     // 커뮤니티 목록
     @GetMapping
     public ResponseEntity<List<CommunityResponse>> getCommunityList(
-            @RequestParam int page,
-            @RequestParam int size
+            @RequestParam("page") int page,
+            @RequestParam("size") int size
     ){
         return ResponseEntity.ok(communityService.getCommunityList(PageRequest.of(page, size)));
     }
 
     // 커뮤니티 단건 조회
+    // 여기서 게시글 목록들이 짜르륵 나와야 될려나?
     @GetMapping("/{id}")
     public ResponseEntity<CommunityResponse> getCommunity(@PathVariable("id") Long id){
         return ResponseEntity.ok(communityService.getCommunity(id));
@@ -56,15 +57,15 @@ public class ApiV1CommunityController {
         communityService.deleteCommunityById(id);
     }
 
-    // 본인이 만든 커뮤니티 조회
-    @GetMapping("/{host}")
-    public ResponseEntity<List<CommunityResponse>> getCommunityByHost(
-            @Valid @PathVariable("host") Long host,
-            @RequestParam int page,
-            @RequestParam int size
-    ){
-        return ResponseEntity.ok(communityService.getCommunityByHost(host, PageRequest.of(page,size)));
-    }
+//    // 본인이 만든 커뮤니티 조회
+//    @GetMapping("/{host}")
+//    public ResponseEntity<List<CommunityResponse>> getCommunityByHost(
+//            @Valid @PathVariable("host") Long host,
+//            @RequestParam int page,
+//            @RequestParam int size
+//    ){
+//        return ResponseEntity.ok(communityService.getCommunityByHost(host, PageRequest.of(page,size)));
+//    }
 
 //    // 본인이 참여한 커뮤니티 조회
 //    @GetMapping

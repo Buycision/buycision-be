@@ -16,7 +16,6 @@ import static lombok.AccessLevel.PROTECTED;
 @MappedSuperclass
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
-@SuperBuilder
 @EntityListeners(AuditingEntityListener.class)
 @ToString
 @EqualsAndHashCode

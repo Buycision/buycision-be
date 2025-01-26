@@ -16,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "board_comment")
-@SuperBuilder
+@Builder
 public class Comment extends BaseEntity {
 
     @Id

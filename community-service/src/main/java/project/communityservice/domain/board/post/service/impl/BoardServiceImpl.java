@@ -12,6 +12,7 @@ import project.communityservice.domain.board.post.dto.response.BoardResponse;
 import project.communityservice.domain.board.post.dto.response.CommentResponse;
 import project.communityservice.domain.board.post.dto.response.TagResponse;
 import project.communityservice.domain.board.post.entity.Board;
+import project.communityservice.domain.board.post.entity.BoardType;
 import project.communityservice.domain.board.post.repository.BoardRepository;
 import project.communityservice.domain.board.post.service.BoardService;
 import project.communityservice.domain.board.tag.entity.BoardTag;
@@ -41,17 +42,21 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardResponse getBoard(Long id) {
         Board board = boardRepository.getByIdOrElseThrow(id);
-        if (board == null) {
-            log.error("Board with id {} not found", id);
-        }
-
         return BoardResponse.of(board);
     }
 
-    // 게시글 생성
+    // 게시글 생성 (게시판)
     @Override
-    public BoardResponse createBoard(String title, String content, Long tagId) {
-        Board board = Board.createFrom(title, content, tagId);
+    public BoardResponse createBoardToArticle(String title, String content, Long tagId) {
+        Board board = Board.createFrom(title, content, tagId, BoardType.ARTICLE);
+        boardRepository.save(board);
+        return BoardResponse.of(board);
+    }
+
+    // 게시글 생성 (커뮤니티)
+    @Override
+    public BoardResponse createBoardToCommunity(String title, String content, Long tagId) {
+        Board board = Board.createFrom(title, content, tagId, BoardType.COMMUNITY);
         boardRepository.save(board);
         return BoardResponse.of(board);
     }

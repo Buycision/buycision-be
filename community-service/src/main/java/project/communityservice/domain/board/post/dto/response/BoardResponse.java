@@ -1,12 +1,14 @@
 package project.communityservice.domain.board.post.dto.response;
 
 import project.communityservice.domain.board.post.entity.Board;
+import project.communityservice.domain.board.post.entity.BoardType;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public record BoardResponse(
         Long id,
+        BoardType type,
         String title,
         String content,
         TagResponse tagResponse,
@@ -16,6 +18,7 @@ public record BoardResponse(
     public static BoardResponse of(Board board) {
         return new BoardResponse(
                 board.getId(),
+                board.getBoardType(),
                 board.getTitle(),
                 board.getContent(),
                 TagResponse.of(board.getBoardTag()),

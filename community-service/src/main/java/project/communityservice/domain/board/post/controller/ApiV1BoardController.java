@@ -34,10 +34,10 @@ public class ApiV1BoardController {
         return ResponseEntity.ok(boardService.getBoard(id));
     }
 
-    // 게시물 등록
+    // 게시물 등록 (게시판)
     @PostMapping
     public ResponseEntity<BoardResponse> createBoard(@Valid @RequestBody BoardCreateRequest boardCreateRequest) {
-        return ResponseEntity.ok(boardService.createBoard(boardCreateRequest.title(), boardCreateRequest.content(), boardCreateRequest.tagId()));
+        return ResponseEntity.ok(boardService.createBoardToArticle(boardCreateRequest.title(), boardCreateRequest.content(), boardCreateRequest.tagId()));
     }
 
     // 게시물 수정

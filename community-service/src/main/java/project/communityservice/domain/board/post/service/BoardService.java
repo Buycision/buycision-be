@@ -15,7 +15,7 @@ public interface BoardService {
     BoardResponse getBoard(Long id);
 
     // 게시글 등록
-    BoardResponse createBoard(String title, String content, Long tagId);
+    BoardResponse createBoardToArticle(String title, String content, Long tagId);
 
     // 게시글 수정
     BoardResponse updateBoard(Long id, String title, String content);
@@ -34,4 +34,7 @@ public interface BoardService {
 
     // 태그 생성
     TagResponse createTag(String tagName);
+
+    // 게시글 생성
+    BoardResponse createBoardToCommunity(String title, String content, Long tagId );
 }

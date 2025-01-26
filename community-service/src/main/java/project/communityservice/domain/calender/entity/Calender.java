@@ -15,7 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @Entity
 @ToString(callSuper = true)
-@SuperBuilder
+@Builder
 public class Calender extends BaseEntity {
 
     @Id
