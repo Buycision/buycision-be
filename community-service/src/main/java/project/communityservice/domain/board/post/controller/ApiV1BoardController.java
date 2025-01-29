@@ -24,8 +24,9 @@ public class ApiV1BoardController {
 
     // 게시글 목록
     @GetMapping
-    public ResponseEntity<List<BoardResponse>> boardList() {
-        return ResponseEntity.ok(boardService.getBoards());
+    public ResponseEntity<List<BoardResponse>> boardList(@Valid @RequestParam("page") int page,
+                                                         @Valid @RequestParam("size") int size) {
+        return ResponseEntity.ok(boardService.getBoards(PageRequest.of(page, size)));
     }
 
     // 게시물 단건 조회

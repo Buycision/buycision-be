@@ -1,7 +1,6 @@
 package project.communityservice.domain.board.post.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 @Transactional
 public class BoardServiceImpl implements BoardService {
 
@@ -31,19 +29,17 @@ public class BoardServiceImpl implements BoardService {
 
     // 모든 게시글 가져오기
     @Override
-    public List<BoardResponse> getBoards() {
-        List<Board> boards = boardRepository.findAll();
+    public List<BoardResponse> getBoards(Pageable pageable) {
+        Page<Board> boards = boardRepository.findAll(pageable);
+        List<Board> board = boards.getContent();
 
-        return BoardResponse.listOf(boards);
+        return BoardResponse.listOf(board);
     }
 
     // 특정 게시글 가져오기
     @Override
     public BoardResponse getBoard(Long id) {
         Board board = boardRepository.getByIdOrElseThrow(id);
-        if (board == null) {
-            log.error("Board with id {} not found", id);
-        }
 
         return BoardResponse.of(board);
     }
@@ -94,9 +90,6 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void deleteComment(Long boardId, Long commentId) {
-        // 해당 게시글에 해당하는 댓글 지우기위해 boardId 생성
-//        Board board = boardRepository.getByIdOrThrow(boardId);
-
         Comment comment = commentRepository.getByIdOrThrow(commentId);
 
         commentRepository.delete(comment);

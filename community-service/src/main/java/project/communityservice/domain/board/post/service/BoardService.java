@@ -1,5 +1,6 @@
 package project.communityservice.domain.board.post.service;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import project.communityservice.domain.board.post.dto.response.BoardResponse;
 import project.communityservice.domain.board.post.dto.response.CommentResponse;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface BoardService {
     // 게시글 리스트
-    List<BoardResponse> getBoards();
+    List<BoardResponse> getBoards(Pageable pageable);
 
     // 게시글 단건 조회 (게시글, 태그, 댓글)
     BoardResponse getBoard(Long id);
