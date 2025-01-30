@@ -16,13 +16,5 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
                 .orElseThrow(() -> new BaseException(ChatExceptionType.NOT_FOUND_CHAT_ROOM));
     }
 
-    Optional<ChatRoom> findByRoomId(Long roomId);
-
-    // sender와 receiver로 활성화된 채팅방 조회
-    @Query("""
-        SELECT cr
-        FROM ChatRoom cr
-    """)
-    Optional<ChatRoom> findActiveChatRoom();
-
+    Optional<ChatRoom> findByIsActivatedTrue();
 }

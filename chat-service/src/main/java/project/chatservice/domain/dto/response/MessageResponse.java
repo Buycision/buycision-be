@@ -10,4 +10,14 @@ public record MessageResponse(
         String sessionId,
         String nickname,
         Long roomId
-) {}
+) {
+    public static MessageResponse from(String content, String sessionId, String nickname, Long roomId) {
+        return MessageResponse.builder()
+                .type(MessageType.CHAT)
+                .content(content)
+                .sessionId(sessionId)
+                .nickname(nickname)
+                .roomId(roomId)
+                .build();
+    }
+}

@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import project.chatservice.domain.dto.request.MessageRequest;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -13,7 +14,7 @@ import java.time.ZoneId;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Message {
+public class Message implements Serializable {
 
     @Id
     private String id;
