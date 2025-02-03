@@ -1,4 +1,4 @@
-package project.communityservice.config;
+package project.communityservice.global.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springframework.context.annotation.Bean;
