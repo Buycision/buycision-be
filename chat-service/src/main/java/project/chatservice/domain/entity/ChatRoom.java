@@ -2,10 +2,12 @@ package project.chatservice.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 
 @Table(name = "chat_room")
@@ -21,14 +23,9 @@ public class ChatRoom {
     @Column(name = "room_id")
     private Long roomId;
 
-    // FIXME: 유저 테이블 구현되면 그때 연결
-//    @ManyToOne
-//    @JoinColumn(name = "user1_id", nullable = false)
-//    private User user1;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "user2_id")
-//    private User user2;
+    private Long sender;
+
+    private Long receiver;
 
     @Column(nullable = false)
     private Boolean roomActive;
@@ -39,5 +36,13 @@ public class ChatRoom {
     // 채팅방 비활성화
     public void roomDeActivate() {
         this.roomActive = false;
+    }
+
+    @Builder
+    public ChatRoom(Long sender, Long receiver) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.roomActive = true;
+        this.createdAt = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
     }
 }

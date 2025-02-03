@@ -2,6 +2,7 @@ package project.userservice.domain.repository;
 
 import project.globalservice.exception.BaseException;
 import org.springframework.data.jpa.repository.JpaRepository;
+import project.userservice.domain.entity.OAuthType;
 import project.userservice.domain.entity.User;
 import project.userservice.domain.exception.UserExceptionType;
 
@@ -14,6 +15,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     }
 
     Optional<User> findByEmail(String email);
+
+    Optional<User> findByOauthTypeAndEmail(OAuthType oauthType, String email);
 
     boolean existsByEmail(String email);
 }

@@ -1,9 +1,12 @@
 package project.chatservice.domain.entity;
 
 import jakarta.persistence.Id;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
-import project.chatservice.domain.dto.request.MessageRequestDto;
+import project.chatservice.domain.dto.request.MessageRequest;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -32,7 +35,7 @@ public class Message {
         this.createdAt = createdAt;
     }
 
-    public static Message of(MessageRequestDto chatMessageDto) {
+    public static Message of(MessageRequest chatMessageDto) {
         return Message.builder()
                 .roomId(chatMessageDto.roomId())
                 .senderId(chatMessageDto.userId())
@@ -40,7 +43,6 @@ public class Message {
                 .createdAt(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
                 .build();
     }
-
 }
 
 
