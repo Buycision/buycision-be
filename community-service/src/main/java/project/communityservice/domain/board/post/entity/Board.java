@@ -3,7 +3,12 @@ package project.communityservice.domain.board.post.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import project.communityservice.domain.board.comment.entity.Comment;
+import project.communityservice.domain.board.tag.entity.BoardTag;
 import project.communityservice.global.baseEntity.BaseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -28,18 +33,29 @@ public class Board extends BaseEntity {
     @Column(nullable = false, name = "content")
     private String content; // 게시글 내용
 
-    public static Board createFrom(String title, String content) {
+    @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @Builder.Default
+    private List<Comment> comments = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_tag_id")
+    private BoardTag boardTag; // 게시글 태그
+
+    public static Board createFrom(String title, String content, Long tagId) {
         return Board.builder()
                 .title(title)
                 .content(content)
+                .boardTag(BoardTag.searchFrom(tagId))
                 .build();
     }
 
-    public static Board updateFrom(Long id, String title, String content) {
+    public static Board updateFrom(Long id, String title, String content, Long tagId) {
         return Board.builder()
                 .id(id)
                 .title(title)
                 .content(content)
+                .boardTag(BoardTag.searchFrom(tagId))
                 .build();
     }
 }
