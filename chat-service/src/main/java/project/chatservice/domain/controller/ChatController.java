@@ -1,20 +1,17 @@
 package project.chatservice.domain.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import project.chatservice.domain.dto.request.MessageRequest;
-import project.chatservice.domain.dto.response.ChatResponseDto;
 import project.chatservice.domain.dto.response.MessageResponse;
+import project.chatservice.domain.service.ChatProducer;
 import project.chatservice.domain.service.ChatService;
-import project.globalservice.response.BaseResponse;
 
 @Tag(name = "Chat", description = "채팅 관련 API")
 @RestController
@@ -23,20 +20,18 @@ import project.globalservice.response.BaseResponse;
 public class ChatController {
 
     private final ChatService chatService;
+    private final ChatProducer chatProducer;
 
+    @Operation(summary = "채팅 메시지 전송", description = "'topic' 을 구독한 모든 사용자에게 채팅 메시지를 전송합니다.")
     @MessageMapping("/chat")
     @SendTo("/topic/chat")
     public MessageResponse sendChatMessage(MessageRequest request, SimpMessageHeaderAccessor accessor) {
-        return chatService.processMessage(request, accessor.getSessionId(), (String) accessor.getSessionAttributes().get("nickname"));
+        log.info("sendChatMessage: {}", request);
+        chatProducer.sendChatMessage(request.toEntity());
+        return chatService.processMessage(
+                request, accessor.getSessionId(),
+                (String) accessor.getSessionAttributes().get("nickname")
+        );
     }
 
-    @GetMapping("/messages")
-    public BaseResponse<ChatResponseDto> getChatMessages(
-            @RequestHeader("Authorization") String authorizationHeader,
-            @RequestParam Long roomId,
-            @RequestParam int size,
-            @RequestParam int page) {
-        ChatResponseDto responseDto = chatService.getMessages(authorizationHeader, roomId, size, page);
-        return new BaseResponse<>(responseDto);
-    }
 }

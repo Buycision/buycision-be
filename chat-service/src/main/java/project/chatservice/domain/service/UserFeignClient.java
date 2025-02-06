@@ -11,7 +11,6 @@ public interface UserFeignClient {
     @GetMapping("/id/{id}")
     UserDto getUserById(@PathVariable("id") Long id);
 
-
     @GetMapping("/validate/{id}")
     boolean isUserValid(@PathVariable("id") Long id);
 
