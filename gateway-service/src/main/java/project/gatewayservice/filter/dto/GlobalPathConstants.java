@@ -13,6 +13,7 @@ public class GlobalPathConstants {
             "/user/v3/api-docs",
             "/chat/v3/api-docs",
             "/community/v3/api-docs",
+            "/buy-sell/v3/api-docs",
             "/user/email",
             "/user/register"
     );
