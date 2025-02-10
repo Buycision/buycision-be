@@ -67,4 +67,15 @@ public class FileServiceImpl implements FileService {
                         .object(fileName)
                         .build());
     }
+
+    // 이미지 파일 삭제하기
+    @Override
+    public void deleteFile(String fileName) throws Exception {
+        minioClient.removeObject(
+                RemoveObjectArgs.builder()
+                        .bucket(bucketName)
+                        .object(fileName)
+                        .build()
+        );
+    }
 }
