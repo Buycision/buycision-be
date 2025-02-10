@@ -22,9 +22,11 @@ public class Article {
 
     private String content; // 글 내용
 
-    private String imageUrl; // 사진 (임시) 리스트로 받아오기
+    private Long price; // 가격
 
-    private Long price; // 상품가격
+    private String imageUrl; // 이미지 url
+
+    private String state; // 무슨 상태?
 
     public static Article createFrom(String title, String content, String imageUrl, Long price) {
         return Article.builder()

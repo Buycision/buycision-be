@@ -4,15 +4,18 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import project.buysellservice.domain.article.dto.request.ArticleRequest;
 import project.buysellservice.domain.article.dto.response.ArticleResponse;
 import project.buysellservice.domain.article.service.ArticleService;
+import project.buysellservice.domain.File.service.FileService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/article")
 public class ApiV1ArticleController {
     private final ArticleService articleService;
+    private final FileService fileService;
 
     // 게시글 가져오기
     @GetMapping("/{id}")
@@ -22,18 +25,22 @@ public class ApiV1ArticleController {
 
     // 게시글 생성
     @PostMapping
-    public ResponseEntity<ArticleResponse> createArticle(@Valid @RequestBody ArticleRequest articleRequest) {
+    public ResponseEntity<ArticleResponse> createArticle(@RequestPart("articleRequest") @Valid ArticleRequest articleRequest,
+                                                         @RequestPart("file") MultipartFile file) throws Exception {
+        String imageUrl = fileService.uploadFile(file);
         return ResponseEntity.ok(articleService.createArticle(
-                articleRequest.title(), articleRequest.content(), articleRequest.imageUrl(), articleRequest.price()
+                articleRequest.title(), articleRequest.content(), imageUrl, articleRequest.price()
         ));
     }
 
     // 게시글 수정
     @PutMapping("/{id}")
     public ResponseEntity<ArticleResponse> updateArticle(@Valid @PathVariable("id") Long id,
-                                                         @RequestBody ArticleRequest articleRequest) {
+                                                         @RequestBody ArticleRequest articleRequest,
+                                                         @RequestParam MultipartFile file) throws Exception {
+        String imageUrl = fileService.uploadFile(file);
         return ResponseEntity.ok(articleService.updateArticle(
-                id, articleRequest.title(), articleRequest.content(), articleRequest.imageUrl(), articleRequest.price()
+                id, articleRequest.title(), articleRequest.content(), imageUrl, articleRequest.price()
         ));
     }
 

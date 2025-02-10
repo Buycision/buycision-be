@@ -12,6 +12,7 @@ import project.buysellservice.domain.article.service.ArticleService;
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
 
+    // 생성
     @Override
     public ArticleResponse createArticle(String name, String content, String imageUrl, Long price) {
         Article article = Article.createFrom(name, content, imageUrl, price);
@@ -28,6 +29,8 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleResponse updateArticle(Long id, String name, String content, String imageUrl, Long price) {
         Article article = articleRepository.getByIdOrThrow(id);
+
+
         Article newArticle = Article.updateFrom(article.getId(), name, content, imageUrl, price);
         articleRepository.save(newArticle);
         return ArticleResponse.of(newArticle);
@@ -37,4 +40,5 @@ public class ArticleServiceImpl implements ArticleService {
     public void deleteArticle(Long id) {
         articleRepository.deleteById(id);
     }
+
 }
