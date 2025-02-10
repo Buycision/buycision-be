@@ -2,6 +2,8 @@ package project.buysellservice.domain.article.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import project.buysellservice.domain.File.service.FileService;
 import project.buysellservice.domain.article.dto.response.ArticleResponse;
 import project.buysellservice.domain.article.entity.Article;
 import project.buysellservice.domain.article.repository.ArticleRepository;
@@ -11,10 +13,13 @@ import project.buysellservice.domain.article.service.ArticleService;
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
+    private final FileService fileService;
 
     // 생성
     @Override
-    public ArticleResponse createArticle(String name, String content, String imageUrl, Long price) {
+    public ArticleResponse createArticle(String name, String content, MultipartFile file, Long price) throws Exception {
+        String imageUrl = fileService.uploadFile(file, name);
+
         Article article = Article.createFrom(name, content, imageUrl, price);
         articleRepository.save(article);
         return ArticleResponse.of(article);
@@ -29,7 +34,11 @@ public class ArticleServiceImpl implements ArticleService {
 
     // 수정
     @Override
-    public ArticleResponse updateArticle(Long id, String name, String content, String imageUrl, Long price) {
+    public ArticleResponse updateArticle(Long id, String name, String content, MultipartFile file, Long price) throws Exception {
+        fileService.deleteFile(id);
+
+        String imageUrl = fileService.uploadFile(file, name);
+
         Article article = articleRepository.getByIdOrThrow(id);
 
         Article newArticle = Article.updateFrom(article.getId(), name, content, imageUrl, price);
@@ -37,6 +46,7 @@ public class ArticleServiceImpl implements ArticleService {
         return ArticleResponse.of(newArticle);
     }
 
+    // 삭제
     @Override
     public void deleteArticle(Long id) {
         articleRepository.deleteById(id);

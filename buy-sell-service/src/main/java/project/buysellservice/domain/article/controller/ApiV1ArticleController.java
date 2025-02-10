@@ -2,6 +2,7 @@ package project.buysellservice.domain.article.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,7 @@ import project.buysellservice.domain.article.service.ArticleService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/article")
+@Slf4j
 public class ApiV1ArticleController {
     private final ArticleService articleService;
     private final FileService fileService;
@@ -27,9 +29,8 @@ public class ApiV1ArticleController {
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<ArticleResponse> createArticle(@RequestPart("articleRequest") @Valid ArticleRequest articleRequest,
                                                          @RequestPart("file") MultipartFile file) throws Exception {
-        String imageUrl = fileService.uploadFile(file);
         return ResponseEntity.ok(articleService.createArticle(
-                articleRequest.title(), articleRequest.content(), imageUrl, articleRequest.price()
+                articleRequest.title(), articleRequest.content(), file, articleRequest.price()
         ));
     }
 
@@ -38,15 +39,15 @@ public class ApiV1ArticleController {
     public ResponseEntity<ArticleResponse> updateArticle(@Valid @PathVariable("id") Long id,
                                                          @RequestPart("articleRequest") ArticleRequest articleRequest,
                                                          @RequestPart MultipartFile file) throws Exception {
-        String imageUrl = fileService.uploadFile(file);
         return ResponseEntity.ok(articleService.updateArticle(
-                id, articleRequest.title(), articleRequest.content(), imageUrl, articleRequest.price()
+                id, articleRequest.title(), articleRequest.content(), file, articleRequest.price()
         ));
     }
 
     // 게시글 삭제
     @DeleteMapping("/{id}")
-    public void deleteArticle(@PathVariable("id") Long id) {
+    public void deleteArticle(@PathVariable("id") Long id) throws Exception {
+        fileService.deleteBucket(id);
         articleService.deleteArticle(id);
     }
 
