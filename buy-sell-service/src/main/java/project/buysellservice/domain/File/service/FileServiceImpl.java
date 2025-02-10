@@ -3,18 +3,21 @@ package project.buysellservice.domain.File.service;
 import io.minio.*;
 import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import project.buysellservice.global.config.MinioConfig;
 
 import java.io.InputStream;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FileServiceImpl implements FileService {
-
     private final MinioClient minioClient;
 
+    @Value("${minio.server.bucket}")
     private String bucketName;
 
     // 파일 업로드
@@ -23,8 +26,9 @@ public class FileServiceImpl implements FileService {
         String fileName = file.getOriginalFilename(); // 파일이름 가져오고
         InputStream fileStream = file.getInputStream(); // 파일 데이터를 읽고 가져온다.
 
+        log.info(fileName);
         PutObjectArgs putObjectArgs = PutObjectArgs.builder()
-                .bucket(fileName)
+                .bucket(bucketName)
                 .object(fileName)
                 .stream(fileStream, file.getSize(), -1)
                 .contentType(file.getContentType())
@@ -62,10 +66,5 @@ public class FileServiceImpl implements FileService {
                         .bucket(bucketName)
                         .object(fileName)
                         .build());
-    }
-
-    @Override
-    public void deleteFile(String fileName) {
-
     }
 }

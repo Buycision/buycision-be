@@ -15,6 +15,6 @@ public interface FileService {
     InputStream getFile(String fileName) throws Exception;
 
     // 파일 삭제하기
-    void deleteFile(String fileName);
+
 
 }

@@ -1,5 +1,6 @@
 package project.buysellservice.domain.article.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -24,9 +25,10 @@ public class Article {
 
     private Long price; // 가격
 
+    @Column(length = 2048)
     private String imageUrl; // 이미지 url
 
-    private String state; // 무슨 상태?
+    private State state; // 상태 (팔린 것과 안 팔린 것)
 
     public static Article createFrom(String title, String content, String imageUrl, Long price) {
         return Article.builder()

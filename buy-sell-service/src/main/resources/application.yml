@@ -3,3 +3,11 @@ spring:
     name: buy-sell-service
   config:
     import: "optional:configserver:${CONFIG_SERVER:http://localhost:8888}"
+
+  # Minio server configuration
+minio:
+  server:
+    url: http://localhost:9000
+    access-key: minioadmin
+    secret-key: minioadmin123
+    bucket: files

@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @ConfigurationProperties
-@RequiredArgsConstructor
 public class MinioConfig {
 
     private String minioUrl;
@@ -21,7 +20,7 @@ public class MinioConfig {
     public MinioClient minioClient() {
         return MinioClient.builder()
                 .endpoint("http://localhost:9000") // 실제 Minio 서버의 endpoint를 입력해야 합니다.
-                .credentials("accessKey", "secretKey")
+                .credentials("minioadmin", "minioadmin123")
                 .build();
     }
 

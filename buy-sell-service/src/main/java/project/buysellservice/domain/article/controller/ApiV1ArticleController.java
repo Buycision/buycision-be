@@ -22,9 +22,8 @@ public class ApiV1ArticleController {
     public ResponseEntity<ArticleResponse> getArticleById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(articleService.readArticle(id));
     }
-
     // 게시글 생성
-    @PostMapping
+    @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<ArticleResponse> createArticle(@RequestPart("articleRequest") @Valid ArticleRequest articleRequest,
                                                          @RequestPart("file") MultipartFile file) throws Exception {
         String imageUrl = fileService.uploadFile(file);
