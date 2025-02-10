@@ -5,10 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import project.buysellservice.domain.File.service.FileService;
 import project.buysellservice.domain.article.dto.request.ArticleRequest;
 import project.buysellservice.domain.article.dto.response.ArticleResponse;
 import project.buysellservice.domain.article.service.ArticleService;
-import project.buysellservice.domain.File.service.FileService;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +22,7 @@ public class ApiV1ArticleController {
     public ResponseEntity<ArticleResponse> getArticleById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(articleService.readArticle(id));
     }
+
     // 게시글 생성
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<ArticleResponse> createArticle(@RequestPart("articleRequest") @Valid ArticleRequest articleRequest,
@@ -33,10 +34,10 @@ public class ApiV1ArticleController {
     }
 
     // 게시글 수정
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ArticleResponse> updateArticle(@Valid @PathVariable("id") Long id,
-                                                         @RequestBody ArticleRequest articleRequest,
-                                                         @RequestParam MultipartFile file) throws Exception {
+                                                         @RequestPart("articleRequest") ArticleRequest articleRequest,
+                                                         @RequestPart MultipartFile file) throws Exception {
         String imageUrl = fileService.uploadFile(file);
         return ResponseEntity.ok(articleService.updateArticle(
                 id, articleRequest.title(), articleRequest.content(), imageUrl, articleRequest.price()

@@ -28,8 +28,6 @@ public class Article {
     @Column(length = 2048)
     private String imageUrl; // 이미지 url
 
-    private State state; // 상태 (팔린 것과 안 팔린 것)
-
     public static Article createFrom(String title, String content, String imageUrl, Long price) {
         return Article.builder()
                 .title(title)

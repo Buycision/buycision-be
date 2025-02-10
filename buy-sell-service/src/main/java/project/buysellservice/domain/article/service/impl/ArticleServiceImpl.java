@@ -20,16 +20,17 @@ public class ArticleServiceImpl implements ArticleService {
         return ArticleResponse.of(article);
     }
 
+    // 읽기
     @Override
     public ArticleResponse readArticle(Long id) {
         Article article = articleRepository.getByIdOrThrow(id);
         return ArticleResponse.of(article);
     }
 
+    // 수정
     @Override
     public ArticleResponse updateArticle(Long id, String name, String content, String imageUrl, Long price) {
         Article article = articleRepository.getByIdOrThrow(id);
-
 
         Article newArticle = Article.updateFrom(article.getId(), name, content, imageUrl, price);
         articleRepository.save(newArticle);
