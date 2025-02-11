@@ -3,6 +3,8 @@ package project.buysellservice.domain.article.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +13,8 @@ import project.buysellservice.domain.article.dto.request.ArticleRequest;
 import project.buysellservice.domain.article.dto.response.ArticleResponse;
 import project.buysellservice.domain.article.service.ArticleService;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/article")
@@ -18,6 +22,13 @@ import project.buysellservice.domain.article.service.ArticleService;
 public class ApiV1ArticleController {
     private final ArticleService articleService;
     private final FileService fileService;
+
+    // 게시글 전체 페이징 처리
+    @GetMapping
+    public ResponseEntity<List<ArticleResponse>> getArticle(@Valid @RequestParam("page") int page,
+                                                            @Valid @RequestParam("size") int size) {
+        return ResponseEntity.ok(articleService.readAllArticles(PageRequest.of(page, size)));
+    }
 
     // 게시글 가져오기
     @GetMapping("/{id}")

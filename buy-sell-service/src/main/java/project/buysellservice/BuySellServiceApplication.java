@@ -11,6 +11,7 @@ import project.buysellservice.global.config.MinioConfig;
 @EnableDiscoveryClient
 @SpringBootApplication
 @EnableConfigurationProperties(MinioConfig.class)
+@EnableJpaAuditing
 public class BuySellServiceApplication {
 
     public static void main(String[] args) {

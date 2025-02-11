@@ -1,6 +1,8 @@
 package project.buysellservice.domain.article.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import project.buysellservice.domain.File.service.FileService;
@@ -8,6 +10,8 @@ import project.buysellservice.domain.article.dto.response.ArticleResponse;
 import project.buysellservice.domain.article.entity.Article;
 import project.buysellservice.domain.article.repository.ArticleRepository;
 import project.buysellservice.domain.article.service.ArticleService;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +54,14 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void deleteArticle(Long id) {
         articleRepository.deleteById(id);
+    }
+
+    // 모든 게시글 가져오기
+    @Override
+    public List<ArticleResponse> readAllArticles(Pageable pageable) {
+        Page<Article> articles = articleRepository.findAllByOrderByCreatedAt(pageable);
+        List<Article> article = articles.getContent();
+        return ArticleResponse.listOf(article);
     }
 
 }

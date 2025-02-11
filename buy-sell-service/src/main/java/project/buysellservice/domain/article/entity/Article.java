@@ -8,13 +8,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.buysellservice.global.Util.BaseEntity;
 
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Article {
+public class Article extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id; // 고유 아이디
