@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ArticleService {
     // 게시글 생성
-    ArticleResponse createArticle(String name, String content, MultipartFile file, Long Price) throws Exception;
+    ArticleResponse createArticle(String name, String content, List<MultipartFile> files, Long Price) throws Exception;
 
     // 게시글 읽기
     ArticleResponse readArticle(Long id);

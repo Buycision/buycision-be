@@ -39,9 +39,9 @@ public class ApiV1ArticleController {
     // 게시글 생성
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<ArticleResponse> createArticle(@RequestPart("articleRequest") @Valid ArticleRequest articleRequest,
-                                                         @RequestPart("file") MultipartFile file) throws Exception {
+                                                         @RequestPart("file") List<MultipartFile> files) throws Exception {
         return ResponseEntity.ok(articleService.createArticle(
-                articleRequest.title(), articleRequest.content(), file, articleRequest.price()
+                articleRequest.title(), articleRequest.content(), files, articleRequest.price()
         ));
     }
 

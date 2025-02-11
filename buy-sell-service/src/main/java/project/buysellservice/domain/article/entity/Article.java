@@ -1,14 +1,14 @@
 package project.buysellservice.domain.article.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.buysellservice.domain.File.entity.File;
 import project.buysellservice.global.Util.BaseEntity;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,24 +26,26 @@ public class Article extends BaseEntity {
 
     private Long price; // 가격
 
-    @Column(length = 2048)
-    private String imageUrl; // 이미지 url
+    @ElementCollection  // List<String>을 JPA에서 사용할 수 있도록 설정
+    @CollectionTable(name = "file_images")  // 별도의 테이블을 생성 (file_images 테이블)
+    @Column(name = "image_url")  // 테이블의 컬럼명 지정
+    private List<String> imageUrls;
 
-    public static Article createFrom(String title, String content, String imageUrl, Long price) {
+    public static Article createFrom(String title, String content, File file, Long price) {
         return Article.builder()
                 .title(title)
                 .content(content)
-                .imageUrl(imageUrl)
+                .file(file)
                 .price(price)
                 .build();
     }
 
-    public static Article updateFrom(Long id, String title, String content, String imageUrl, Long price) {
+    public static Article updateFrom(Long id, String title, String content, File file, Long price) {
         return Article.builder()
                 .id(id)
                 .title(title)
                 .content(content)
-                .imageUrl(imageUrl)
+                .file(file)
                 .price(price)
                 .build();
     }

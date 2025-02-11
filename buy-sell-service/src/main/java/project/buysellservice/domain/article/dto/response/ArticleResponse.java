@@ -1,5 +1,7 @@
 package project.buysellservice.domain.article.dto.response;
 
+import project.buysellservice.domain.File.dto.response.FileResponse;
+import project.buysellservice.domain.File.entity.File;
 import project.buysellservice.domain.article.entity.Article;
 
 import java.util.List;
@@ -8,15 +10,17 @@ import java.util.stream.Collectors;
 public record ArticleResponse(
         String title,
         String content,
-        String imageUrl,
-        Long price
+        Long price,
+        FileResponse fileResponse
+
 ) {
     public static ArticleResponse of(Article article) {
         return new ArticleResponse(
                 article.getTitle(),
                 article.getContent(),
-                article.getImageUrl(),
-                article.getPrice()
+                article.getPrice(),
+                FileResponse.of(article.getFile())
+
         );
     }
 

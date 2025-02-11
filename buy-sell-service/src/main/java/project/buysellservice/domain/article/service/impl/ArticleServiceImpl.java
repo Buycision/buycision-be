@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import project.buysellservice.domain.File.dto.response.FileResponse;
+import project.buysellservice.domain.File.entity.File;
 import project.buysellservice.domain.File.service.FileService;
 import project.buysellservice.domain.article.dto.response.ArticleResponse;
 import project.buysellservice.domain.article.entity.Article;
@@ -21,10 +23,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     // 생성
     @Override
-    public ArticleResponse createArticle(String name, String content, MultipartFile file, Long price) throws Exception {
-        String imageUrl = fileService.uploadFile(file, name);
-
-        Article article = Article.createFrom(name, content, imageUrl, price);
+    public ArticleResponse createArticle(String name, String content, List<MultipartFile> files, Long price) throws Exception {
+        FileResponse file = fileService.uploadFile(files);
+        Article article = Article.createFrom(name, content, file, price);
         articleRepository.save(article);
         return ArticleResponse.of(article);
     }
