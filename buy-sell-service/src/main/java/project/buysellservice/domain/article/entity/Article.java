@@ -40,20 +40,25 @@ public class Article extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private State state;
 
+    @Column(name = "category")
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
     // 게시글 생성 빌더
-    public static Article createFrom(String title, String content, List<String> files, Long price, String bucketName) {
+    public static Article createFrom(String title, String content, List<String> files, Long price, String bucketName, Category category) {
         return Article.builder()
                 .title(title)
                 .content(content)
                 .files(files)
                 .price(price)
                 .bucketName(bucketName)
+                .category(category)
                 .state(State.SELL)
                 .build();
     }
 
     // 게시글 수정 빌더
-    public static Article updateFrom(Long id, String title, String content, List<String> files, Long price, String bucketName) {
+    public static Article updateFrom(Long id, String title, String content, List<String> files, Long price, String bucketName, Category category) {
         return Article.builder()
                 .id(id)
                 .title(title)
@@ -61,6 +66,7 @@ public class Article extends BaseEntity {
                 .files(files)
                 .price(price)
                 .bucketName(bucketName)
+                .category(category)
                 .state(State.SELL)
                 .build();
     }

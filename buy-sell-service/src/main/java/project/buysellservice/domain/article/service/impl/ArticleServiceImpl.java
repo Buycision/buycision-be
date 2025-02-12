@@ -9,6 +9,7 @@ import project.buysellservice.domain.File.service.FileService;
 import project.buysellservice.domain.article.dto.response.ArticleResponse;
 import project.buysellservice.domain.article.dto.response.FileResponse;
 import project.buysellservice.domain.article.entity.Article;
+import project.buysellservice.domain.article.entity.Category;
 import project.buysellservice.domain.article.repository.ArticleRepository;
 import project.buysellservice.domain.article.service.ArticleService;
 
@@ -31,6 +32,7 @@ public class ArticleServiceImpl implements ArticleService {
         return ArticleResponse.listOf(article);
     }
 
+    // 게시글 팔림 처리
     @Override
     public ArticleResponse soldArticle(Long id) {
         Article article = articleRepository.getByIdOrThrow(id);
@@ -50,13 +52,23 @@ public class ArticleServiceImpl implements ArticleService {
         return ArticleResponse.of(article);
     }
 
+    // 카테고리 게시글 가져오기
+    @Override
+    public List<ArticleResponse> readCategoryArticle(Category category, Pageable pageable) {
+
+        Page<Article> articles = articleRepository.findAllByCategory(category, pageable);
+
+        List<Article> article = articles.getContent();
+
+        return ArticleResponse.listOf(article);
+    }
 
     // 생성
     @Override
-    public ArticleResponse createArticle(String name, String content, List<MultipartFile> files, Long price) throws Exception {
+    public ArticleResponse createArticle(String name, String content, List<MultipartFile> files, Long price, Category category) throws Exception {
         FileResponse fileData = fileService.createFile(files);
 
-        Article article = Article.createFrom(name, content, fileData.files(), price, fileData.bucketName());
+        Article article = Article.createFrom(name, content, fileData.files(), price, fileData.bucketName(), category);
 
         articleRepository.save(article);
 
@@ -65,14 +77,14 @@ public class ArticleServiceImpl implements ArticleService {
 
     // 수정
     @Override
-    public ArticleResponse updateArticle(Long id, String name, String content, List<MultipartFile> files, Long price) throws Exception {
+    public ArticleResponse updateArticle(Long id, String name, String content, List<MultipartFile> files, Long price, Category category) throws Exception {
         fileService.deleteFile(id);
 
         FileResponse fileData = fileService.updateFile(files, id);
 
         Article article = articleRepository.getByIdOrThrow(id);
 
-        Article newArticle = Article.updateFrom(article.getId(), name, content, fileData.files(), price, fileData.bucketName());
+        Article newArticle = Article.updateFrom(article.getId(), name, content, fileData.files(), price, fileData.bucketName(), category);
 
         articleRepository.save(newArticle);
 
