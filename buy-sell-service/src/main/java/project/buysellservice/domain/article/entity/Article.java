@@ -29,7 +29,7 @@ public class Article extends BaseEntity {
     private Long price; // 가격
 
     @ElementCollection  // List<String>을 JPA에서 사용할 수 있도록 설정
-    @CollectionTable(name = "file_images")  // 별도의 테이블을 생성 (file_images 테이블)
+    @CollectionTable(name = "bucketName")  // 별도의 테이블을 생성 (file_images 테이블)
     @Column(name = "image_url", length = 2048)  // 테이블의 컬럼명 지정
     private List<String> files; // 이미지 저장
 
