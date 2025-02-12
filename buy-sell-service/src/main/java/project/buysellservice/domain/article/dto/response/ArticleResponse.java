@@ -1,7 +1,5 @@
 package project.buysellservice.domain.article.dto.response;
 
-import project.buysellservice.domain.File.dto.response.FileResponse;
-import project.buysellservice.domain.File.entity.File;
 import project.buysellservice.domain.article.entity.Article;
 
 import java.util.List;
@@ -11,7 +9,7 @@ public record ArticleResponse(
         String title,
         String content,
         Long price,
-        FileResponse fileResponse
+        List<String> files
 
 ) {
     public static ArticleResponse of(Article article) {
@@ -19,7 +17,7 @@ public record ArticleResponse(
                 article.getTitle(),
                 article.getContent(),
                 article.getPrice(),
-                FileResponse.of(article.getFile())
+                article.getFiles()
 
         );
     }

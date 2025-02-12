@@ -1,37 +1,45 @@
 package project.buysellservice.domain.File.service.impl;
 
+import com.fasterxml.uuid.Generators;
+import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import io.minio.*;
 import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import project.buysellservice.domain.File.dto.response.FileResponse;
-import project.buysellservice.domain.File.entity.File;
-import project.buysellservice.domain.File.repository.FileRepository;
 import project.buysellservice.domain.File.service.FileService;
 import project.buysellservice.domain.article.repository.ArticleRepository;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FileServiceImpl implements FileService {
     private final MinioClient minioClient;
     private final ArticleRepository articleRepository;
-    private final FileRepository fileRepository;
 
-    // 파일 업로드
+    // 버킷 네임 생성
     @Override
-    public FileResponse uploadFile(List<MultipartFile> files) throws Exception {
-        List<String> uploadedUrls = new ArrayList<>();
-        String bucketName = "Post - " + UUID.randomUUID(); // 해당 고유값을 사용하여 게시글과 연관되게 만들고 싶음
+    public String getBucketName() {
+        TimeBasedGenerator generator = Generators.timeBasedGenerator();
+        // UUID 버전 1 생성
+        UUID uuid = generator.generate();
 
-        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())) {
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
-        } // 버킷이 없으면 만들어주는 코드
+        return "post-" + uuid.toString().toLowerCase().replaceAll("-", "");
+    }
+
+    // 파일 업로드 과정 (생성, 수정 중복)
+    @Override
+    public Map<String, Object> uploadFile(List<MultipartFile> files, String bucketName) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("bucket", bucketName);
+
+        // 이미지 url 저장
+        List<String> urls = new ArrayList<>();
 
         for (MultipartFile file : files) {
             String fileName = file.getOriginalFilename(); // 파일이름 가져오고
@@ -55,42 +63,58 @@ public class FileServiceImpl implements FileService {
                             .build()
             );
 
-            uploadedUrls.add(fileUrl);
+            urls.add(fileUrl);
         }
 
-        File file = File.createFrom(uploadedUrls, bucketName);
+        result.put("urls", urls);
 
-        fileRepository.save(file);
-
-        return FileResponse.of(file);
+        return result;
     }
+
+    // 파일 업로드
+    @Override
+    public Map<String, Object> createFile(List<MultipartFile> files) throws Exception {
+        // 버킷 이름 저장
+        String bucketName = getBucketName();
+
+        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())) {
+            minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+        } // 버킷이 없으면 만들어주는 코드
+
+        return uploadFile(files, bucketName);
+    }
+
+    @Override
+    public Map<String, Object> updateFile(List<MultipartFile> files, Long id) throws Exception {
+        String bucketName = articleRepository.getByIdOrThrow(id).getBucketName();
+
+        return uploadFile(files, bucketName);
+    }
+
 
     // 이미지 파일 삭제하기
     @Override
     public void deleteFile(Long id) throws Exception {
-        String bucketName = articleRepository.getByIdOrThrow(id).getTitle();
-        String fileName = getFileName(id);
+        String bucketName = articleRepository.getByIdOrThrow(id).getBucketName();
+        List<String> fileNames = getFileName(id);
 
-        minioClient.removeObject(
-                RemoveObjectArgs.builder()
-                        .bucket(bucketName)
-                        .object(fileName)
-                        .build()
-        );
+        for (String file : fileNames) {
+            minioClient.removeObject(
+                    RemoveObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(file)
+                            .build()
+            );
+
+        }
     }
 
     // 버킷 전체 삭제하기
     @Override
     public void deleteBucket(Long id) throws Exception {
-        String bucketName = articleRepository.getByIdOrThrow(id).getTitle();
-        String fileName = getFileName(id);
+        String bucketName = articleRepository.getByIdOrThrow(id).getBucketName();
 
-        minioClient.removeObject(
-                RemoveObjectArgs.builder()
-                        .bucket(bucketName)
-                        .object(fileName)
-                        .build()
-        );
+        deleteFile(id);
 
         minioClient.removeBucket(
                 RemoveBucketArgs.builder()
@@ -100,12 +124,20 @@ public class FileServiceImpl implements FileService {
 
     // 이미지 url 에서 파일 이름 가져오기
     @Override
-    public String getFileName(Long id) {
-        String url = articleRepository.getByIdOrThrow(id).getImageUrl();
+    public List<String> getFileName(Long id) {
+        List<String> urls = articleRepository.getByIdOrThrow(id).getFiles();
 
-        String fileNameWithParams = url.substring(url.lastIndexOf("/") + 1);
+        List<String> fileNames = new ArrayList<>();
 
-        return fileNameWithParams.split("\\?")[0];
+        for (String url : urls) {
+            String fileNameWithParams = url.substring(url.lastIndexOf("/") + 1);
+
+            String fileName = fileNameWithParams.split("\\?")[0];
+
+            fileNames.add(fileName);
+        }
+
+        return fileNames;
     }
 
 
