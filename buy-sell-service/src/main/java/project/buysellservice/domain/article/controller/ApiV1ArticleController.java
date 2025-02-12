@@ -1,6 +1,7 @@
 package project.buysellservice.domain.article.controller;
 
 import jakarta.validation.Valid;
+import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -43,7 +44,7 @@ public class ApiV1ArticleController {
     }
 
     // 게시글 수정
-    @PatchMapping(value = "/{id}", consumes = "multipart/form-data")
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public ResponseEntity<ArticleResponse> updateArticle(@Valid @PathVariable("id") Long id,
                                                          @RequestPart("articleRequest") ArticleRequest articleRequest,
                                                          @RequestPart("file") List<MultipartFile> files) throws Exception {
@@ -56,6 +57,12 @@ public class ApiV1ArticleController {
     @DeleteMapping("/{id}")
     public void deleteArticle(@PathVariable("id") Long id) throws Exception {
         articleService.deleteArticle(id);
+    }
+
+    // 해당 물품 판매 처리 -> 게시글 솔드 상태
+    @PatchMapping("/{id}")
+    public ResponseEntity<ArticleResponse> soldArticle(@Valid @PathVariable("id") Long id){
+        return ResponseEntity.ok(articleService.soldArticle(id));
     }
 
 }
