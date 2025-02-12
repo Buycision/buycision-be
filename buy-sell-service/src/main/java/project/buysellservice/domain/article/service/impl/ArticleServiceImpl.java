@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import project.buysellservice.domain.File.service.FileService;
 import project.buysellservice.domain.article.dto.response.ArticleResponse;
+import project.buysellservice.domain.article.dto.response.FileResponse;
 import project.buysellservice.domain.article.entity.Article;
 import project.buysellservice.domain.article.repository.ArticleRepository;
 import project.buysellservice.domain.article.service.ArticleService;
@@ -42,14 +43,12 @@ public class ArticleServiceImpl implements ArticleService {
     // 생성
     @Override
     public ArticleResponse createArticle(String name, String content, List<MultipartFile> files, Long price) throws Exception {
-        Map<String, Object> fileData = fileService.createFile(files);
+        FileResponse fileData = fileService.createFile(files);
 
-        String bucketName = (String) fileData.get("bucket");
+        Article article = Article.createFrom(name, content, fileData.files(), price, fileData.bucketName());
 
-        List<String> images = (List<String>) fileData.get("urls");
-
-        Article article = Article.createFrom(name, content, images, price, bucketName);
         articleRepository.save(article);
+
         return ArticleResponse.of(article);
     }
 
@@ -58,15 +57,11 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleResponse updateArticle(Long id, String name, String content, List<MultipartFile> files, Long price) throws Exception {
         fileService.deleteFile(id);
 
-        Map<String, Object> fileData = fileService.updateFile(files, id);
-
-        String bucketName = (String) fileData.get("bucket");
-
-        List<String> images = (List<String>) fileData.get("urls");
+        FileResponse fileData = fileService.updateFile(files, id);
 
         Article article = articleRepository.getByIdOrThrow(id);
 
-        Article newArticle = Article.updateFrom(article.getId(), name, content, images, price, bucketName);
+        Article newArticle = Article.updateFrom(article.getId(), name, content, fileData.files(), price, fileData.bucketName());
 
         articleRepository.save(newArticle);
 

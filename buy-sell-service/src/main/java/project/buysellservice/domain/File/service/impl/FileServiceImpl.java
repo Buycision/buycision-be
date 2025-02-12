@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import project.buysellservice.domain.File.service.FileService;
+import project.buysellservice.domain.article.dto.response.FileResponse;
 import project.buysellservice.domain.article.repository.ArticleRepository;
 
 import java.io.InputStream;
@@ -33,11 +34,7 @@ public class FileServiceImpl implements FileService {
 
     // 파일 업로드 과정 (생성, 수정 중복)
     @Override
-    public Map<String, Object> uploadFile(List<MultipartFile> files, String bucketName) throws Exception {
-        Map<String, Object> result = new HashMap<>();
-
-        result.put("bucket", bucketName);
-
+    public FileResponse uploadFile(List<MultipartFile> files, String bucketName) throws Exception {
         // 이미지 url 저장
         List<String> urls = new ArrayList<>();
 
@@ -66,14 +63,12 @@ public class FileServiceImpl implements FileService {
             urls.add(fileUrl);
         }
 
-        result.put("urls", urls);
-
-        return result;
+        return FileResponse.of(urls, bucketName);
     }
 
     // 파일 업로드
     @Override
-    public Map<String, Object> createFile(List<MultipartFile> files) throws Exception {
+    public FileResponse createFile(List<MultipartFile> files) throws Exception {
         // 버킷 이름 저장
         String bucketName = getBucketName();
 
@@ -85,7 +80,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Map<String, Object> updateFile(List<MultipartFile> files, Long id) throws Exception {
+    public FileResponse updateFile(List<MultipartFile> files, Long id) throws Exception {
         String bucketName = articleRepository.getByIdOrThrow(id).getBucketName();
 
         return uploadFile(files, bucketName);
