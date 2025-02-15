@@ -119,6 +119,23 @@ services:
     networks:
       - app-network
 
+  notification-service:
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    image: hyeonseong1010/notification-service:latest
+    container_name: notification-service
+    restart: unless-stopped
+    environment:
+      - EUREKA_SERVER=http://discovery-service:8761/eureka
+      - CONFIG_SERVER=http://config-service:8888
+      - RABBITMQ_HOST=bus-service
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - app-network
+
   kafka00:
     image: bitnami/kafka:3.7.0
     restart: unless-stopped
