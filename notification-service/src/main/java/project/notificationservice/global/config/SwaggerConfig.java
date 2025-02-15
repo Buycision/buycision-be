@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Configuration
 @Component("notificationSwaggerConfig")
-@Profile("notification-service") //이 프로파일이 활성화될 때만 로드
+@Profile("notification-service") //이 프로파일이 활성화될 때만 로드!
 public class SwaggerConfig {
 
     @Bean(name = "notificationCustomOpenAPI")
