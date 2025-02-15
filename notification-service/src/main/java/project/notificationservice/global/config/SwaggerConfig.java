@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 @Profile("notification-service") //이 프로파일이 활성화될 때만 로드
 public class SwaggerConfig {
 
-    @Bean(name = "communityCustomOpenAPI")
+    @Bean(name = "notificationCustomOpenAPI")
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new io.swagger.v3.oas.models.info.Info()
-                        .title("Chat API")
+                        .title("Notification API")
                         .version("v1")
-                        .description("커뮤니티 서비스 API"))
+                        .description("알림 서비스 API"))
                 .openapi("3.0.1");
     }
 }
