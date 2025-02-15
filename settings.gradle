@@ -9,5 +9,5 @@ include ':user-service'
 include ':chat-service'
 include ':community-service'
 include ':buy-sell-service'
-include 'notification-service'
+include ':notification-service'
 
