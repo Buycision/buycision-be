@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import project.buysellservice.domain.article.entity.Article;
 import project.buysellservice.domain.article.entity.Category;
 import project.buysellservice.domain.article.entity.QArticle;
+import project.buysellservice.domain.article.entity.State;
 import project.buysellservice.domain.article.repository.ArticleRepositoryCustom;
 
 import java.util.List;
@@ -57,5 +58,21 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom {
                 .fetch();
 
         return new PageImpl<>(articles);
+    }
+
+    @Override
+    public Page<Article> findBySellStatus(Pageable pageable) {
+        QArticle article = QArticle.article;
+
+        List<Article> articles = jpaQueryFactory
+                .selectFrom(article)
+                .where(article.state.eq(State.SELL))
+                .orderBy(article.createDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        return new PageImpl<>(articles);
+
     }
 }

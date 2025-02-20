@@ -22,15 +22,36 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     private final FileService fileService;
 
-    // 모든 게시글 가져오기
+    // 모든 게시글 가져오기 (최신순)
     @Override
     public List<ArticleResponse> readAllArticles(Pageable pageable) {
-        Page<Article> articles = articleRepository.findAllByOrderByCreatedAt(pageable);
+        Page<Article> articles = articleRepository.findAllByOrderByCreatedAtDesc(pageable);
 
         List<Article> article = articles.getContent();
 
         return ArticleResponse.listOf(article);
     }
+
+    // 모든 게시글 가져오기 (오래된순)
+    @Override
+    public List<ArticleResponse> readAllArticlesOrderByAsc(Pageable pageable) {
+        Page<Article> articles = articleRepository.findAllByOrderByCreatedAtAsc(pageable);
+
+        List<Article> article = articles.getContent();
+
+        return ArticleResponse.listOf(article);
+    }
+
+    // 구매 가능 게시판만 보기
+    @Override
+    public List<ArticleResponse> readByStateSell(Pageable pageable) {
+        Page<Article> articles = articleRepository.findBySellStatus(pageable);
+
+        List<Article> article = articles.getContent();
+
+        return ArticleResponse.listOf(article);
+    }
+
 
     // 게시글 팔림 처리
     @Override

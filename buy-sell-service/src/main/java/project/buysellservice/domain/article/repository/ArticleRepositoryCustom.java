@@ -16,6 +16,7 @@ public interface ArticleRepositoryCustom {
     Page<Article> findAllByCategory(Category category, Pageable pageable);
 
     // 거래가능만 보기
+    Page<Article> findBySellStatus(Pageable pageable);
 
     // 가격별로 보기 (나눔)
 

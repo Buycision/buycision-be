@@ -1,7 +1,6 @@
 package project.buysellservice.domain.article.controller;
 
 import jakarta.validation.Valid;
-import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -29,10 +28,24 @@ public class ApiV1ArticleController {
         return ResponseEntity.ok(articleService.readAllArticles(PageRequest.of(page, size)));
     }
 
+    // 게시글 전체 (오래된순)
+    @GetMapping("/asc")
+    public ResponseEntity<List<ArticleResponse>> getArticleAsc(@Valid @RequestParam("page") int page,
+                                                               @Valid @RequestParam("size") int size) {
+        return ResponseEntity.ok(articleService.readAllArticlesOrderByAsc(PageRequest.of(page, size)));
+    }
+
     // 게시글 가져오기
     @GetMapping("/{id}")
     public ResponseEntity<ArticleResponse> getArticleById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(articleService.readArticle(id));
+    }
+
+    // 구매가능 게시글만 보기
+    @GetMapping("/stateSell")
+    public ResponseEntity<List<ArticleResponse>> getArticleStateSell(@Valid @RequestParam("page") int page,
+                                                                     @Valid @RequestParam("size") int size) {
+        return ResponseEntity.ok(articleService.readByStateSell(PageRequest.of(page, size)));
     }
 
     // 게시글 생성
