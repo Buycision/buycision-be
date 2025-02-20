@@ -52,6 +52,14 @@ public class ArticleServiceImpl implements ArticleService {
         return ArticleResponse.listOf(article);
     }
 
+    // 가격대별로 게시판 보기
+    @Override
+    public List<ArticleResponse> readByPrice(Pageable pageable, int minPrice, int maxPrice) {
+        Page<Article> articles = articleRepository.findByPrice(pageable, minPrice, maxPrice);
+        List<Article> article = articles.getContent();
+        return ArticleResponse.listOf(article);
+    }
+
 
     // 게시글 팔림 처리
     @Override

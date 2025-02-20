@@ -48,6 +48,15 @@ public class ApiV1ArticleController {
         return ResponseEntity.ok(articleService.readByStateSell(PageRequest.of(page, size)));
     }
 
+    // 가격대 별로 게시판 보기
+    @GetMapping("/price")
+    public ResponseEntity<List<ArticleResponse>> getArticlePrice(@Valid @RequestParam("page") int page,
+                                                                 @Valid @RequestParam("size") int size,
+                                                                 @Valid @RequestParam("minPrice") int minPrice,
+                                                                 @Valid @RequestParam("maxPrice") int maxPrice) {
+        return ResponseEntity.ok(articleService.readByPrice(PageRequest.of(page, size), minPrice, maxPrice));
+    }
+
     // 게시글 생성
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<ArticleResponse> createArticle(@RequestPart("articleRequest") @Valid ArticleRequest articleRequest,

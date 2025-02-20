@@ -18,12 +18,7 @@ public interface ArticleRepositoryCustom {
     // 거래가능만 보기
     Page<Article> findBySellStatus(Pageable pageable);
 
-    // 가격별로 보기 (나눔)
-
-    // 가격별로 보기 (5000원 이하)
-
-    // 가격별로 보기 (10000원 이하)
-
     // 가격별로 보기 (직접 설정)
+    Page<Article> findByPrice(Pageable pageable, int minPrice, int maxPrice);
 
 }

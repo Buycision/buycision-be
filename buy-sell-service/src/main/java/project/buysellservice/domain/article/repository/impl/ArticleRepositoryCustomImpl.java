@@ -75,4 +75,19 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom {
         return new PageImpl<>(articles);
 
     }
+
+    @Override
+    public Page<Article> findByPrice(Pageable pageable, int minPrice, int maxPrice) {
+        QArticle article = QArticle.article;
+
+        List<Article> articles = jpaQueryFactory
+                .selectFrom(article)
+                .where(article.price.goe(minPrice), article.price.loe(maxPrice))
+                .orderBy(article.createDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        return new PageImpl<>(articles);
+    }
 }

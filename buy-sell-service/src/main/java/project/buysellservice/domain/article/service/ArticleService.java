@@ -35,4 +35,7 @@ public interface ArticleService {
     // 구매가능 게시판만 보기
     List<ArticleResponse> readByStateSell(Pageable pageable);
 
+    // 가격대 별로 게시판 보기
+    List<ArticleResponse> readByPrice(Pageable pageable, int minPrice, int maxPrice);
+
 }
