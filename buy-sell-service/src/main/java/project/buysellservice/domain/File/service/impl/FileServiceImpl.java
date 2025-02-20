@@ -22,9 +22,11 @@ public class FileServiceImpl implements FileService {
     private final MinioClient minioClient;
     private final ArticleRepository articleRepository;
 
+    String bucketName = "article";
+
     // 버킷 네임 생성
     @Override
-    public String getBucketName() {
+    public String newFileName() {
         TimeBasedGenerator generator = Generators.timeBasedGenerator();
         // UUID 버전 1 생성
         UUID uuid = generator.generate();
@@ -35,12 +37,15 @@ public class FileServiceImpl implements FileService {
     // 파일 업로드 과정 (생성, 수정 중복)
     @Override
     public FileResponse uploadFile(List<MultipartFile> files, String bucketName) throws Exception {
+
         // 이미지 url 저장
         List<String> urls = new ArrayList<>();
 
         for (MultipartFile file : files) {
-            String fileName = file.getOriginalFilename(); // 파일이름 가져오고
+            String fileName = newFileName(); // 파일이름 가져오고
             InputStream fileStream = file.getInputStream(); // 파일 데이터를 읽고 가져온다.
+
+
 
             PutObjectArgs putObjectArgs = PutObjectArgs.builder()
                     .bucket(bucketName)
@@ -69,8 +74,6 @@ public class FileServiceImpl implements FileService {
     // 파일 업로드
     @Override
     public FileResponse createFile(List<MultipartFile> files) throws Exception {
-        // 버킷 이름 저장
-        String bucketName = getBucketName();
 
         if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())) {
             minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
@@ -81,8 +84,8 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public FileResponse updateFile(List<MultipartFile> files, Long id) throws Exception {
-        String bucketName = articleRepository.getByIdOrThrow(id).getBucketName();
 
+        deleteFile(id);
         return uploadFile(files, bucketName);
     }
 
@@ -90,8 +93,8 @@ public class FileServiceImpl implements FileService {
     // 이미지 파일 삭제하기
     @Override
     public void deleteFile(Long id) throws Exception {
-        String bucketName = articleRepository.getByIdOrThrow(id).getBucketName();
-        List<String> fileNames = getFileName(id);
+
+        List<String> fileNames = getFileName(id); // 각 파일이름 받아오고 거기서 삭제
 
         for (String file : fileNames) {
             minioClient.removeObject(
@@ -121,6 +124,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public List<String> getFileName(Long id) {
         List<String> urls = articleRepository.getByIdOrThrow(id).getFiles();
+        log.info("[getFileName] urls : {}", urls);
 
         List<String> fileNames = new ArrayList<>();
 
@@ -131,7 +135,7 @@ public class FileServiceImpl implements FileService {
 
             fileNames.add(fileName);
         }
-
+        log.info("[getFileName] fileNames : {}", fileNames);
         return fileNames;
     }
 

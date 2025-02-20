@@ -94,8 +94,7 @@ public class ArticleServiceImpl implements ArticleService {
     // 삭제
     @Override
     public void deleteArticle(Long id) throws Exception {
-        fileService.deleteBucket(id);
-
+        fileService.deleteFile(id);
         articleRepository.deleteById(id);
     }
 
