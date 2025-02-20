@@ -17,12 +17,26 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Page<Article> findAllByOrderByCreatedAt(Pageable pageable) {
+    public Page<Article> findAllByOrderByCreatedAtDesc(Pageable pageable) {
         QArticle article = QArticle.article;
 
         List<Article> articles = jpaQueryFactory
                 .selectFrom(article)
                 .orderBy(article.createDate.desc())
+                .offset(pageable.getOffset())  // 페이지 시작 위치
+                .limit(pageable.getPageSize()) // 한 페이지에 표시할 개수
+                .fetch();
+
+        return new PageImpl<>(articles);
+    }
+
+    @Override
+    public Page<Article> findAllByOrderByCreatedAtAsc(Pageable pageable) {
+        QArticle article = QArticle.article;
+
+        List<Article> articles = jpaQueryFactory
+                .selectFrom(article)
+                .orderBy(article.createDate.asc())
                 .offset(pageable.getOffset())  // 페이지 시작 위치
                 .limit(pageable.getPageSize()) // 한 페이지에 표시할 개수
                 .fetch();
