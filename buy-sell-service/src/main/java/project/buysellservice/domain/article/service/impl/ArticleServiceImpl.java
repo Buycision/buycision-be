@@ -3,6 +3,7 @@ package project.buysellservice.domain.article.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import project.buysellservice.domain.File.service.FileService;
@@ -25,7 +26,7 @@ public class ArticleServiceImpl implements ArticleService {
     // 모든 게시글 가져오기 (최신순)
     @Override
     public List<ArticleResponse> readAllArticles(Pageable pageable) {
-        Page<Article> articles = articleRepository.findAllByOrderByCreatedAtDesc(pageable);
+        Slice<Article> articles = articleRepository.findAllByOrderByCreatedAtDesc(pageable);
 
         List<Article> article = articles.getContent();
 
@@ -35,7 +36,7 @@ public class ArticleServiceImpl implements ArticleService {
     // 모든 게시글 가져오기 (오래된순)
     @Override
     public List<ArticleResponse> readAllArticlesOrderByAsc(Pageable pageable) {
-        Page<Article> articles = articleRepository.findAllByOrderByCreatedAtAsc(pageable);
+        Slice<Article> articles = articleRepository.findAllByOrderByCreatedAtAsc(pageable);
 
         List<Article> article = articles.getContent();
 
@@ -45,7 +46,7 @@ public class ArticleServiceImpl implements ArticleService {
     // 구매 가능 게시판만 보기
     @Override
     public List<ArticleResponse> readByStateSell(Pageable pageable) {
-        Page<Article> articles = articleRepository.findBySellStatus(pageable);
+        Slice<Article> articles = articleRepository.findBySellStatus(pageable);
 
         List<Article> article = articles.getContent();
 
@@ -55,7 +56,7 @@ public class ArticleServiceImpl implements ArticleService {
     // 가격대별로 게시판 보기
     @Override
     public List<ArticleResponse> readByPrice(Pageable pageable, int minPrice, int maxPrice) {
-        Page<Article> articles = articleRepository.findByPrice(pageable, minPrice, maxPrice);
+        Slice<Article> articles = articleRepository.findByPrice(pageable, minPrice, maxPrice);
         List<Article> article = articles.getContent();
         return ArticleResponse.listOf(article);
     }
@@ -85,7 +86,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleResponse> readCategoryArticle(Category category, Pageable pageable) {
 
-        Page<Article> articles = articleRepository.findAllByCategory(category, pageable);
+        Slice<Article> articles = articleRepository.findAllByCategory(category, pageable);
 
         List<Article> article = articles.getContent();
 
