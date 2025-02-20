@@ -14,9 +14,4 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
         // 예외처리 만들기
     }
 
-    // 버킷 네임 생성
-    default String bucketName() {
-        return "Post - " + UUID.randomUUID();
-    }
-
 }

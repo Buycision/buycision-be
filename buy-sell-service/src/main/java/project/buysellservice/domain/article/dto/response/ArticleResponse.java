@@ -1,6 +1,7 @@
 package project.buysellservice.domain.article.dto.response;
 
 import project.buysellservice.domain.article.entity.Article;
+import project.buysellservice.domain.article.entity.Category;
 import project.buysellservice.domain.article.entity.State;
 
 import java.util.List;
@@ -11,7 +12,8 @@ public record ArticleResponse(
         String content,
         Long price,
         List<String> files,
-        State state
+        State state,
+        Category category
 
 ) {
     public static ArticleResponse of(Article article) {
@@ -20,7 +22,8 @@ public record ArticleResponse(
                 article.getContent(),
                 article.getPrice(),
                 article.getFiles(),
-                article.getState()
+                article.getState(),
+                article.getCategory()
 
         );
     }

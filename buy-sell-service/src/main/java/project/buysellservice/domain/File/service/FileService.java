@@ -25,6 +25,5 @@ public interface FileService {
     // 파일 이름 가져오기
     List<String> getFileName(Long id) throws Exception;
 
-    // 버킷 이름 생성
-    String getBucketName() throws Exception;
+    String newFileName() throws Exception;
 }
