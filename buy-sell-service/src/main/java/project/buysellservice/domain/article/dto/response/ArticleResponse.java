@@ -8,15 +8,17 @@ import java.util.stream.Collectors;
 public record ArticleResponse(
         String title,
         String content,
-        String imageUrl,
-        Long price
+        Long price,
+        List<String> files
+
 ) {
     public static ArticleResponse of(Article article) {
         return new ArticleResponse(
                 article.getTitle(),
                 article.getContent(),
-                article.getImageUrl(),
-                article.getPrice()
+                article.getPrice(),
+                article.getFiles()
+
         );
     }
 
