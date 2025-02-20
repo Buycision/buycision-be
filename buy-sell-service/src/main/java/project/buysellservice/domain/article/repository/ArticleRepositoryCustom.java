@@ -6,5 +6,5 @@ import project.buysellservice.domain.article.entity.Article;
 
 public interface ArticleRepositoryCustom {
     // 전체 게시글 받아오기
-    Page<Article> findAll(Pageable pageable);
+    Page<Article> findAllByOrderByCreatedAt(Pageable pageable);
 }

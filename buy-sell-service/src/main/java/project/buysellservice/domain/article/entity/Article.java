@@ -1,5 +1,6 @@
 package project.buysellservice.domain.article.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -7,13 +8,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.buysellservice.global.Util.BaseEntity;
 
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Article {
+public class Article extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id; // 고유 아이디
@@ -22,9 +24,10 @@ public class Article {
 
     private String content; // 글 내용
 
-    private String imageUrl; // 사진 (임시) 리스트로 받아오기
+    private Long price; // 가격
 
-    private Long price; // 상품가격
+    @Column(length = 2048)
+    private String imageUrl; // 이미지 url
 
     public static Article createFrom(String title, String content, String imageUrl, Long price) {
         return Article.builder()
