@@ -31,6 +31,17 @@ public class ArticleServiceImpl implements ArticleService {
         return ArticleResponse.listOf(article);
     }
 
+    @Override
+    public ArticleResponse soldArticle(Long id) {
+        Article article = articleRepository.getByIdOrThrow(id);
+
+        Article soldArticle = Article.soldFrom(article.getId(), article);
+
+        articleRepository.save(soldArticle);
+
+        return ArticleResponse.of(soldArticle);
+    }
+
     // 단일 게시글 가져오기
     @Override
     public ArticleResponse readArticle(Long id) {

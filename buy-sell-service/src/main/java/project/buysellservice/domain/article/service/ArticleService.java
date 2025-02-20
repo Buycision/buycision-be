@@ -22,4 +22,7 @@ public interface ArticleService {
     // 전체 게시글 읽기
     List<ArticleResponse> readAllArticles(Pageable pageable);
 
+    // 게시글 팔림 처리
+    ArticleResponse soldArticle(Long id);
+
 }

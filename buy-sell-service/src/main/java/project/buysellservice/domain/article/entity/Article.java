@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Article extends BaseEntity {
@@ -36,6 +36,10 @@ public class Article extends BaseEntity {
     @Column(name = "bucketName")
     private String bucketName; // UUID + Post
 
+    @Column(name = "state")
+    @Enumerated(EnumType.STRING)
+    private State state;
+
     // 게시글 생성 빌더
     public static Article createFrom(String title, String content, List<String> files, Long price, String bucketName) {
         return Article.builder()
@@ -44,6 +48,7 @@ public class Article extends BaseEntity {
                 .files(files)
                 .price(price)
                 .bucketName(bucketName)
+                .state(State.SELL)
                 .build();
     }
 
@@ -56,6 +61,15 @@ public class Article extends BaseEntity {
                 .files(files)
                 .price(price)
                 .bucketName(bucketName)
+                .state(State.SELL)
+                .build();
+    }
+
+    // 물건이 거래 중 및 팔렸을 때
+    public static Article soldFrom(Long id, Article article) {
+        return article.toBuilder()
+                .id(id)
+                .state(State.SOLD)
                 .build();
     }
 }
