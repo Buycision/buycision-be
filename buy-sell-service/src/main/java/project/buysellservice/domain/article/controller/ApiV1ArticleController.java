@@ -1,10 +1,10 @@
 package project.buysellservice.domain.article.controller;
 
 import jakarta.validation.Valid;
-import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,15 +24,34 @@ public class ApiV1ArticleController {
 
     // 게시글 전체 페이징 처리
     @GetMapping
-    public ResponseEntity<List<ArticleResponse>> getArticle(@Valid @RequestParam("page") int page,
-                                                            @Valid @RequestParam("size") int size) {
-        return ResponseEntity.ok(articleService.readAllArticles(PageRequest.of(page, size)));
+    public ResponseEntity<List<ArticleResponse>> getArticle(Pageable pageable) {
+        return ResponseEntity.ok(articleService.readAllArticles(pageable));
+    }
+
+    // 게시글 전체 (오래된순)
+    @GetMapping("/asc")
+    public ResponseEntity<List<ArticleResponse>> getArticleAsc(Pageable pageable) {
+        return ResponseEntity.ok(articleService.readAllArticlesOrderByAsc(pageable));
     }
 
     // 게시글 가져오기
     @GetMapping("/{id}")
     public ResponseEntity<ArticleResponse> getArticleById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(articleService.readArticle(id));
+    }
+
+    // 구매가능 게시글만 보기
+    @GetMapping("/stateSell")
+    public ResponseEntity<List<ArticleResponse>> getArticleStateSell(Pageable pageable) {
+        return ResponseEntity.ok(articleService.readByStateSell(pageable));
+    }
+
+    // 가격대 별로 게시판 보기
+    @GetMapping("/price")
+    public ResponseEntity<List<ArticleResponse>> getArticlePrice(Pageable pageable,
+                                                                 @Valid @RequestParam("minPrice") int minPrice,
+                                                                 @Valid @RequestParam("maxPrice") int maxPrice) {
+        return ResponseEntity.ok(articleService.readByPrice(pageable, minPrice, maxPrice));
     }
 
     // 게시글 생성
@@ -69,9 +88,8 @@ public class ApiV1ArticleController {
     // 해당 카테고리 글만 가져오기
     @GetMapping("/category")
     public ResponseEntity<List<ArticleResponse>> getArticleByCategory(@Valid @RequestParam("category") Category category,
-                                                                      @Valid @RequestParam("page") int page,
-                                                                      @Valid @RequestParam("size") int size) {
-        return ResponseEntity.ok(articleService.readCategoryArticle(category, PageRequest.of(page, size)));
+                                                                      Pageable pageable) {
+        return ResponseEntity.ok(articleService.readCategoryArticle(category, pageable));
     }
 
 }
